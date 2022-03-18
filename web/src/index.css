@@ -224,10 +224,31 @@ body, html{
   width: 100%;
   height: auto;
   padding: 0px;
+  position: relative;
   margin: 0px;
-  padding-top: var(--topBarHeight);
 }
 
-.MainBody .container{
-  padding-top: 20px;
+.MainBody .mTitle{
+  width: 100%;
+  padding: 0px;
+  background: var(--lightColor);
+  position: fixed;
+  height: 40px;
+  top: var(--topBarHeight);
+  left: 0;
+  right: 0;
+}
+
+.MainBody .mTitle .container{
+  height: 100%;
+}
+
+.MainBody .mTitle .container p{
+  line-height: 40px;
+  font-family: "OpenSansRegular";
+}
+
+.MainBody .mContainer{
+  width: 100%;
+  padding-top: 110px;
 }

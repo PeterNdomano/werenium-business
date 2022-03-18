@@ -16,6 +16,7 @@ export default class NavBar extends Component{
 
   componentDidMount(){
     this.setMenu(this.props);
+    //alert(this.state.navTo)
   }
 
   UNSAFE_componentWillReceiveProps(props){
@@ -45,6 +46,15 @@ export default class NavBar extends Component{
           </div>
         </div>
 
+        <div onClick={() => this.navTo("stock")} className={(props.navTo === "stock") ? "mItem selected d-flex" : "mItem d-flex"}>
+          <div className="align-self-center p-1">
+            <MdHome className="mIcon"/>
+          </div>
+          <div className="align-self-center p-1">
+            <p className="mTitle">Stock</p>
+          </div>
+        </div>
+
         <div onClick={() => this.navTo("sales")} className={(props.navTo === "sales") ? "mItem selected d-flex" : "mItem d-flex"}>
           <div className="align-self-center p-1">
             <MdHome className="mIcon"/>
@@ -56,7 +66,7 @@ export default class NavBar extends Component{
 
 
 
-        <div onClick={() => this.navTo("invoicing")} className={(props.navTo === "invoicing") ? "mItem selected d-flex" : "mItem d-flex"} className="mItem d-flex">
+        <div onClick={() => this.navTo("invoicing")} className={(props.navTo === "invoicing") ? "mItem selected d-flex" : "mItem d-flex"}>
           <div className="align-self-center p-1">
             <MdHome className="mIcon"/>
           </div>
@@ -65,21 +75,12 @@ export default class NavBar extends Component{
           </div>
         </div>
 
-        <div onClick={() => this.navTo("more")} className={(props.navTo === "more") ? "mItem selected d-flex" : "mItem d-flex"} className="mItem d-flex">
+        <div onClick={() => this.navTo("more")} className={(props.navTo === "more") ? "mItem selected d-flex" : "mItem d-flex"}>
           <div className="align-self-center p-1">
             <MdHome className="mIcon"/>
           </div>
           <div className="align-self-center p-1">
             <p className="mTitle">More Tools</p>
-          </div>
-        </div>
-
-        <div onClick={() => this.navTo("stock")} className={(props.navTo === "stock") ? "mItem selected d-flex" : "mItem d-flex"}>
-          <div className="align-self-center p-1">
-            <MdHome className="mIcon"/>
-          </div>
-          <div className="align-self-center p-1">
-            <p className="mTitle">Stock</p>
           </div>
         </div>
 

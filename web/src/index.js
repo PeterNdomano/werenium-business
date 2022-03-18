@@ -21,6 +21,11 @@ ReactDOM.render(
   <HashRouter basename="/">
     <Routes>
       <Route path="/" exact element={<App/>} />
+      <Route path="/home" exact element={<App navTo="home"/>} />
+      <Route path="/sales" exact element={<App navTo="sales"/>} />
+      <Route path="/stock" exact element={<App navTo="stock"/>} />
+      <Route path="/invoicing" exact element={<App navTo="invoicing"/>} />
+      <Route path="/more" exact element={<App navTo="more"/>} />
     </Routes>
   </HashRouter>,
   document.getElementById('root')

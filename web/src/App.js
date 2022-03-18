@@ -13,7 +13,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       openNav: false,
-      navTo: "home",
+      navTo: (props.navTo) ? props.navTo :"home",
       showLoader: true,
       showDialog: false,
     };
@@ -23,6 +23,10 @@ export default class App extends Component {
                             msg=""
                             showDialog={this.state.showDialog}
                           />
+  }
+
+  UNSAFE_componentWillReceiveProps(props){
+    this.realNavTo(props.navTo);
   }
 
   componentDidMount(){
@@ -62,10 +66,15 @@ export default class App extends Component {
     });
   }
 
-  navTo = (navTo) => {
+  realNavTo = (navTo) => {
     this.setState({
       navTo
     });
+  }
+
+  navTo = (navTo) => {
+    window.location.href = '/#/'+navTo;
+    this.closeNav();
   }
 
   render(){
