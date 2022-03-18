@@ -8,7 +8,7 @@ import TopBar from './components/TopBar';
 import Footer from './components/Footer';
 import { hideLoader, tellUser } from './Helper';
 import { connect } from './Models/Database';
-import Business from './Models/Business';
+import { createBusiness } from './Models/Business';
 
 export default class App extends Component {
   constructor(props){
@@ -36,7 +36,7 @@ export default class App extends Component {
     (async () => {
       if(!this.db){
         this.db = await connect();
-        this.business = new Business(this.db);
+        this.business = await createBusiness(this.db);
       }
       hideLoader();
     })();

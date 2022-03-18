@@ -3,40 +3,47 @@ import { schema, Order } from 'lovefield';
 //import React from 'react';
 
 
-export default class Business{
-  constructor(db){
+class Business{
+  constructor(info, db){
+    this.info = info;
     this.db = db;
   }
 
-  initialize = async () => {
-    let info = this.db.getSchema().table('businessInfo');
-
-    let rows = await this.db.select()
+  static initialize = async (db) => {
+    let business = null;
+    let info = db.getSchema().table('businessInfo');
+    await db.select()
       .from(info)
       .orderBy(info.id, Order.DESC)
-      .exec();
-    if(rows.length > 0){
-      //set business details
-      this.name = rows[0]['name'];
-      this.currency = rows[0]['currency'];
-      this.TIN = rows[0]['TIN'];
-    }
-    else{
-      //insert row
-      let row = info.createRow({
-        'id': 1,
-        'name': 'BFARMS',
-        'currency': 'Tsh',
-        'TIN': '8766-8765-989'
+      .exec()
+      .then( async (rows) => {
+        if(rows.length > 0){
+          //set business details
+          business = new Business(rows[0], db);
+        }
+        else{
+          //insert row
+          let row = info.createRow({
+            'id': 1,
+            'name': 'BFARMS',
+            'currency': 'Tsh',
+            'TIN': '8766-8765-989'
+          });
+
+          await db.insertOrReplace().into(info).values([row]).exec().then(
+            (rows) => {
+              business = new Business(rows[0], db);
+            }
+          );
+        }
       });
 
-      this.db.insertOrReplace().into(info).values([row]).exec().then(
-        (rows) => {
-          this.name = rows[0]['name'];
-          this.currency = rows[0]['currency'];
-          this.TIN = rows[0]['TIN'];
-        }
-      );
-    }
+    return business;
   }
+}
+
+
+export async function createBusiness(db){
+  let business = await Business.initialize(db);
+  return business;
 }
