@@ -3,8 +3,20 @@ import { CgExtension } from 'react-icons/cg';
 import { AiOutlineStock, AiOutlineAppstoreAdd } from 'react-icons/ai';
 import { numberFormat } from '../Helper';
 import OneStock from '../ones/OneStock';
+import { MDBInput } from 'mdbreact';
+import AddStock from '../views/AddStock';
+
 
 export default class Stock extends Component{
+
+  addStock = () => {
+    this.props.openViewer(
+      "Add Item To Stock",
+      <AddStock business={this.props.business}/>
+    );
+  }
+
+
   render(){
     return (
       <div className="container Stock">
@@ -41,7 +53,7 @@ export default class Stock extends Component{
 
               <div className="col-md-4 col-sm-12">
                 <div className="card introCard" style={{ cursor:"pointer" }}>
-                  <button style={{ width:"100%", height:"100%", margin:"0px"}} className="btn btn-success">
+                  <button onClick={() => this.addStock()} style={{ width:"100%", height:"100%", margin:"0px"}} className="btn btn-success">
                     <AiOutlineAppstoreAdd className="mIcon"/><br/>
                     <h6>Add Stock</h6>
                   </button>
@@ -54,12 +66,21 @@ export default class Stock extends Component{
           <div className="col-sm-12 col-md-12">
             <div className="card">
               <div className="card-body">
-                <h6 className="card-title text-primary font-regular">Stock list</h6><hr/>
+                <div style={{ width:"100%"}}>
+                  <MDBInput style={{ }} label="Search stock list" size="sm" icon="search" />
+                </div>
 
-                <OneStock/>
-                <OneStock/>
-                <OneStock/>
-                <OneStock/>
+                <div style={{ width:"100%"}}>
+                  <OneStock/>
+                  <OneStock/>
+                  <OneStock/>
+                  <OneStock/>
+                </div>
+
+                <div style={{ width:"100%"}} className="text-center">
+                  {/* pagination*/}
+                </div>
+
               </div>
             </div>
           </div>

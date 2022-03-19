@@ -20,7 +20,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 ReactDOM.render(
   <HashRouter basename="/">
     <Routes>
-      <Route path="/" exact element={<App/>} />
+      <Route path="/" exact element={<App navTo="home"/>} />
       <Route path="/home" exact element={<App navTo="home"/>} />
       <Route path="/sales" exact element={<App navTo="sales"/>} />
       <Route path="/stock" exact element={<App navTo="stock"/>} />

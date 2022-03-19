@@ -29,29 +29,36 @@ export default class App extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(props){
-    this.realNavTo(props.navTo);
-  }
+    //alert(props.navTo);
+    (async () => {
+      await this.initialize();
+      this.realNavTo(props.navTo);
+    })();
 
+  }
 
   componentDidMount(){
     (async () => {
-      if(!this.state.dbConnect){
-        this.db = await connect();
-        this.business = await createBusiness(this.db);
-        this.setState({
-          dbConnect: true,
-        })
-        hideLoader();
-      }
-      else{
-        hideLoader();
-      }
-
+      await this.initialize();
     })();
   }
 
   componentWillUnmount(){
     this.db.close();
+  }
+
+  initialize =  async () => {
+    if(!this.state.dbConnect){
+      this.db = await connect();
+      this.business = await createBusiness(this.db);
+      this.setState({
+        dbConnect: true,
+      })
+      hideLoader();
+    }
+    else{
+      hideLoader();
+    }
   }
 
 
