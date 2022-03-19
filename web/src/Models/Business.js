@@ -9,6 +9,25 @@ class Business{
     this.db = db;
   }
 
+  getStock = async () => {
+    let stock = this.db.getSchema().table('stock');
+    return (
+      await this.db.select().from(stock).orderBy(stock.id, Order.DESC).exec().then((rows) => {
+        return rows;
+      })
+    )
+  }
+
+  saveStock = async (item) => {
+    let stock = this.db.getSchema().table('stock');
+    let row = stock.createRow(item);
+    return (
+      await this.db.insertOrReplace().into(stock).values([row]).exec().then((rows) => {
+        return true;
+      })
+    )
+  }
+
   static initialize = async (db) => {
     let business = null;
     let info = db.getSchema().table('businessInfo');

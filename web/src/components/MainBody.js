@@ -6,6 +6,7 @@ import Sales from '../body_divs/Sales';
 import Invoicing from '../body_divs/Invoicing';
 import More from '../body_divs/More';
 import { MdOutlineArrowBack } from  'react-icons/md';
+import $ from 'jquery';
 
 export default class MainBody extends Component{
 
@@ -123,6 +124,8 @@ export default class MainBody extends Component{
   }
 
   render(){
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+
     return (
       <div className="MainBody">
         <div className="mTitle z-depth-1">

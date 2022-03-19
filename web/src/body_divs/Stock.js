@@ -11,7 +11,7 @@ export default class Stock extends Component{
 
   addStock = () => {
     this.props.openViewer(
-      "Add Item To Stock",
+      "Add Items To Stock",
       <AddStock business={this.props.business}/>
     );
   }

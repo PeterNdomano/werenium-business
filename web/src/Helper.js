@@ -10,15 +10,15 @@ export function  showLoader(){
   $('#mainLoader').fadeIn();
 }
 
-export function getLoader(){
+export function getLoader(color = "var(--darkColor)"){
   return (
     <TailSpin
-      width={50}
-      height={50}
-      color = "var(--primaryColor)"
+      width={20}
+      height={20}
+      color = {color}
       wrapperStyle={{
-        width: "40px",
-        height:"40px",
+        width: "20px",
+        height:"20px",
         padding: "0px",
         background:"none",
         margin: "0 auto"
@@ -27,6 +27,19 @@ export function getLoader(){
   );
 }
 
+export function validateNum(num){
+  if(!isNaN(Number(num))){
+    return true;
+  }
+  return false;
+}
+
+export function validateStr(str){
+  if(str.trim().length > 0){
+    return true;
+  }
+  return false;
+}
 
 export function tellUser(msg){
 
