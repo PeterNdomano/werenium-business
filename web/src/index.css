@@ -4,7 +4,7 @@
   --primaryColor: blue;
   --accentColor: #FF8C00;
   --secondaryColor: #c1c7c9;
-  --darkColor: #1e1e1e;
+  --darkColor: #18191a;
   --lightColor: #fefefe;
   --topBarHeight: 70px;
   --maxZIndex: 1000;
@@ -85,6 +85,7 @@ body, html{
   background-position: center;
   background-attachment: fixed;
   background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .TopBar .container{
@@ -133,6 +134,7 @@ body, html{
   background-position: center;
   background-attachment: fixed;
   background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .NavBar-Open{
@@ -143,7 +145,7 @@ body, html{
   left: -450px !important;
 }
 
-.NavBar .mContainer{
+.NavBar > .mContainer{
   padding: 10px;
   position: relative;
   margin: 0px;
@@ -152,7 +154,7 @@ body, html{
   padding-bottom: var(--topBarHeight);
 }
 
-.NavBar .mContainer .mImage{
+.NavBar > .mContainer > .mImage{
   width: 100%;
   position: absolute;
   height: 100px;
@@ -162,12 +164,12 @@ body, html{
   bottom: 0;
 }
 
-.NavBar .mContainer .mImage img{
+.NavBar > .mContainer > .mImage > img{
   width: 100px;
   height: 100px;
 }
 
-.NavBar .mContainer .mItem{
+.NavBar > .mContainer > .mItem{
   width: 100%;
   cursor: pointer;
   margin-top: 10px;
@@ -179,21 +181,21 @@ body, html{
   border-bottom-right-radius: 60px;
 }
 
-.NavBar .mContainer .mItem .mIcon{
+.NavBar > .mContainer > .mItem  .mIcon{
   width: 30px;
   height: 30px;
   margin: 0px;
   padding: 0px;
 }
 
-.NavBar .mContainer .mItem .mTitle{
+.NavBar > .mContainer > .mItem  .mTitle{
   font-size: 16px;
   font-family: "OpenSansRegular";
   margin: 0px;
   padding: 0px;
 }
 
-.NavBar .mContainer .selected{
+.NavBar > .mContainer > .selected{
   background: var(--secondaryColor) !important;
   color: var(--darkColor) !important;
 }
@@ -208,7 +210,7 @@ body, html{
   position: fixed;
 }
 
-.MainLoader .mContainer{
+.MainLoader > .mContainer{
   position: absolute;
   background: none;
   width: 250px;
@@ -228,27 +230,105 @@ body, html{
   margin: 0px;
 }
 
-.MainBody .mTitle{
+.MainBody > .mTitle{
   width: 100%;
   padding: 0px;
   background: var(--lightColor);
   position: fixed;
   height: 40px;
+  z-index: 700;
   top: var(--topBarHeight);
   left: 0;
   right: 0;
 }
 
-.MainBody .mTitle .container{
+.MainBody > .mTitle > .container{
   height: 100%;
 }
 
-.MainBody .mTitle .container p{
+.MainBody > .mTitle > .container > p{
   line-height: 40px;
   font-family: "OpenSansRegular";
 }
 
-.MainBody .mContainer{
+.MainBody > .mContainer{
   width: 100%;
-  padding-top: 110px;
+  padding-top: 130px;
+  padding-bottom: var(--topBarHeight);
+}
+
+
+/*-----------------Stock--------------*/
+.Stock{
+  color: var(--darkColor);
+}
+
+.Stock .introCard{
+  height: 150px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.Stock .introCard .d-flex{
+  height: 100%;
+}
+
+.Stock .introCard h1{
+  font-size: 45px;
+  font-family: "OpenSansRegular";
+  color: var(--lightColor);
+}
+
+.Stock .introCard h6{
+  font-size: 15px;
+  font-family: "OpenSansRegular";
+}
+
+.Stock .introCard .mIcon{
+  width: 80px;
+  height: 80px;
+  color: var(--lightColor);
+}
+
+
+/*----------------OneStock ------------*/
+.OneStock{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.OneStock > .mContainer{
+  width: 100%;
+}
+
+.OneStock > .mContainer > .mTitle{
+  font-size: 16px;
+
+  font-family: "OpenSansBold";
+}
+
+.OneStock > .mContainer > .mAmount{
+  font-size: 28px;
+  color: var(--accentColor);
+  font-family: "OpenSansRegular";
+}
+
+.OneStock > .mContainer > button{
+  width: 40px;
+  padding: 5px;
+  box-shadow: none;
+  color: var(--accentColor);
+}
+
+.OneStock > .mContainer > button:hover{
+  width: 40px;
+  padding: 5px;
+  color: var(--primaryColor);
+}
+
+
+.OneStock > .mContainer > button > .mIcon{
+  width: 20px;
+  height: 20px;
 }

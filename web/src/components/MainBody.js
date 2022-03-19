@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import { getLoader } from '../Helper';
+import Home from '../body_divs/Home';
+import Stock from '../body_divs/Stock';
+import Sales from '../body_divs/Sales';
+import Invoicing from '../body_divs/Invoicing';
+import More from '../body_divs/More';
 
 export default class MainBody extends Component{
 
@@ -7,6 +12,7 @@ export default class MainBody extends Component{
     super(props);
     this.state = {
       showViewer: false,
+      navTo: props.navTo,
     };
     this.initialize(props);
   }
@@ -16,7 +22,10 @@ export default class MainBody extends Component{
   }
 
   UNSAFE_componentWillReceiveProps(props){
-    this.initialize(props);
+    this.initialize(props)
+    this.setState({
+      navTo: props.navTo,
+    })
   }
 
   setTitle = (props) => {
@@ -29,7 +38,7 @@ export default class MainBody extends Component{
           this.title = "Home";
           break;
         case "stock":
-          this.title = "Stock";
+          this.title = "Stock Management";
           break;
         case "sales":
           this.title = "Sales";
@@ -47,28 +56,53 @@ export default class MainBody extends Component{
     }
   }
 
+  setView = (props) => {
+    //console.log(props.business);
+    if(this.state.showViewer){
+
+    }
+    else{
+      switch(props.navTo){
+        case "home":
+          this.view = <Home/>;
+          break;
+        case "stock":
+          this.view = <Stock business={props.business}/>;
+          break;
+        case "sales":
+          this.view = <Sales/>;
+          break;
+        case "invoicing":
+          this.view = <Invoicing/>;
+          break;
+        case "more":
+          this.view = <More/>;
+          break;
+        default:
+          this.view = <div></div>;
+          break;
+      }
+    }
+  }
+
   initialize = (props) => {
     //set title
     this.setTitle(props);
+    //set view
+    this.setView(props);
   }
 
   render(){
     return (
       <div className="MainBody">
-        <div className="mTitle">
+        <div className="mTitle z-depth-1">
           <div className="container">
             <p>{this.title}</p>
           </div>
         </div>
 
         <div className="mContainer">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12 col-sm-12">
-                <h3>{this.title}</h3>
-              </div>
-            </div>
-          </div>
+          {this.view}
         </div>
       </div>
     );

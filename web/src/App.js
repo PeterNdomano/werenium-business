@@ -18,6 +18,7 @@ export default class App extends Component {
       navTo: (props.navTo) ? props.navTo :"home",
       showLoader: true,
       showDialog: false,
+      dbConnect: false,
     };
 
     this.ConfirmDialog = <ConfirmDialog
@@ -34,11 +35,18 @@ export default class App extends Component {
 
   componentDidMount(){
     (async () => {
-      if(!this.db){
+      if(!this.state.dbConnect){
         this.db = await connect();
         this.business = await createBusiness(this.db);
+        this.setState({
+          dbConnect: true,
+        })
+        hideLoader();
       }
-      hideLoader();
+      else{
+        hideLoader();
+      }
+
     })();
   }
 
@@ -97,7 +105,7 @@ export default class App extends Component {
         <MainLoader showLoader={this.state.showLoader}/>
         <TopBar toggleNavCallback={this.toggleNav}/>
         <NavBar navTo={this.state.navTo} navToCallback={this.navTo} closeNavCallback={this.closeNav} openNav={this.state.openNav}/>
-        <MainBody navTo={this.state.navTo}/>
+        <MainBody navTo={this.state.navTo} business={this.business}/>
         <Footer/>
       </div>
     );

@@ -45,3 +45,7 @@ export function tellUser(msg){
     duration: 3000,
   });
 }
+
+export function numberFormat(num){
+  return num;
+}
