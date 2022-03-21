@@ -15,19 +15,17 @@ export default class EditStock extends Component{
     super(props);
     this.state = {
       loading: false,
-      item: {},
+      item: props.item,
     }
   }
 
   edit = async () => {
     if(!this.state.loading){
-      let title = document.getElementById("_title").innerText;
-      let quantity = document.getElementById("_quantity").innerText;
-      let unit = document.getElementById("_unit").innerText;
-      let sPrice = document.getElementById("_sPrice").innerText;
-      let bPrice = document.getElementById("_bPrice").innerText;
-
-      alert(title);
+      let title = $('#_title').val();
+      let quantity = $('#_quantity').val();
+      let unit = $('#_unit').val();
+      let sPrice = $('#_sPrice').val();
+      let bPrice = $('#_bPrice').val();
       if(validateStr(title)){
         if(validateStr(quantity) && !isNaN(quantity)){
           quantity = Number(quantity);
@@ -104,27 +102,14 @@ export default class EditStock extends Component{
     return (
       <div className="container">
         <div className="row">
-          <div className="col-md-12">
-            <h6 style={{ fontFamily:"OpenSansRegular", marginBottom:"40px" }} className="text-danger"><b>Click on item to edit it</b></h6>
+          <div className="col-md-6">
+            <MDBInput onChange={(e) => { this.setState({ item: { title: e.target.value} }) }} id="_title" label="Title" value={this.state.item.title} />
+            <MDBInput onChange={(e) => { this.setState({ item: { quantity: e.target.value} }) }} id="_quantity" label="Quantity" value={this.state.item.quantity}/>
+            <MDBInput onChange={(e) => { this.setState({ item: { unit: e.target.value} }) }} id="_unit" label="Unit" value={this.state.item.unit}/>
           </div>
           <div className="col-md-6">
-            <h6 style={{ fontFamily:"OpenSansRegular" }} className="text-primary"><b>Title</b></h6>
-            <h4 style={{ marginBottom:"30px" }} className="mEditable" contentEditable={true} id="_title">{this.state.item.title}</h4>
-
-            <h6 style={{ fontFamily:"OpenSansRegular" }} className="text-primary"><b>Quantity</b></h6>
-            <h4 style={{ marginBottom:"30px" }} className="mEditable" contentEditable={true} id="_quantity">{this.state.item.quantity}</h4>
-
-            <h6 style={{ fontFamily:"OpenSansRegular" }} className="text-primary"><b>Unit</b></h6>
-            <h4 style={{ marginBottom:"30px" }} className="mEditable" contentEditable={true} id="_unit">{this.state.item.unit}</h4>
-          </div>
-          <div className="col-md-6">
-
-            <h6 style={{ fontFamily:"OpenSansRegular" }} className="text-primary"><b>Buying Price</b></h6>
-            <h4 style={{ marginBottom:"30px" }} className="mEditable" contentEditable={true} id="_bPrice">{this.state.item.bPrice}</h4>
-
-            <h6 style={{ fontFamily:"OpenSansRegular" }} className="text-primary"><b>Selling Price</b></h6>
-            <h4 style={{ marginBottom:"30px" }} className="mEditable" contentEditable={true} id="_sPrice">{this.state.item.sPrice}</h4>
-
+            <MDBInput onChange={(e) => { this.setState({ item: { bPrice: e.target.value} }) }} id="_bPrice" label="Buying Price" value={this.state.item.bPrice}/>
+            <MDBInput onChange={(e) => { this.setState({ item: { sPrice: e.target.value} }) }} id="_sPrice" label="Selling Price" value={this.state.item.sPrice}/>
 
             <div className="text-right" style={{ width: "100%"}}>
               <button onClick={() => this.edit()} style={{ color: "var(--darkColor)"}} className="btn btn-warning">

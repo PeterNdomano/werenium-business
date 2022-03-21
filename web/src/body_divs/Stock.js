@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { CgExtension } from 'react-icons/cg';
 import { AiOutlineStock, AiOutlineAppstoreAdd } from 'react-icons/ai';
-import { numberFormat, getLoader } from '../Helper';
+import { numberFormat, getLoader, tellUser, getStartIndex } from '../Helper';
 import OneStock from '../ones/OneStock';
 import { MDBInput } from 'mdbreact';
 import AddStock from '../views/AddStock';
+import $ from 'jquery';
 
 
 export default class Stock extends Component{
@@ -13,12 +14,25 @@ export default class Stock extends Component{
     super(props);
     this.state = {
       gotStock: false,
+      filterString: '',
+      batchIndex: 0,
     };
 
     this.stockShow = getLoader();
+    this.pagination = '';
     this.stock = [];
-    this.maxItems = 10;
+    this.stockFiltered = [];
+    this.maxItems = 50;
+    this.stockValue = 0
 
+  }
+
+  handleFilter = (e) => {
+    let str = e.target.value;
+    this.setStockShow(str);
+    this.setState({
+      filterString: str,
+    });
   }
 
   addStock = () => {
@@ -30,38 +44,157 @@ export default class Stock extends Component{
 
   getStock = async (show = false) => {
     this.stock = await this.props.business.getStock();
+    this.setStockValue();
     if(show){
       this.setStockShow();
     }
   }
 
-  setStockShow = () => {
-    let limit = this.maxItems;
-    if(this.stock.length > 0){
-      this.stockShow = this.stock.map((item, index) => {
-        if(limit > 0){
-          --limit;
-          return (
-            <OneStock business={this.props.business} getStock={this.getStock} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
-          );
-        }
-        else{
-          if(limit === 0){
-            this.lastIndex = index;
-          }
+  setStockValue = () => {
+    let value = 0;
+    this.stock.forEach((item)=> {
+      value += (item.quantity * item.bPrice);
+    });
+    this.stockValue = value;
+  }
+  setStockShow = (filterStr = '', bIndex = 0) => {
+    if(filterStr.trim().length > 0){
+      //handle filtering
+      this.stockShow = getLoader();
+      this.stockFiltered = [];
+      this.stock.forEach((item, index) => {
+        if(item.title.indexOf(filterStr) > -1){
+          this.stockFiltered.push(item);
         }
       });
 
-      this.setState((prevState) => ({
-        gotStock: !(prevState.gotStock),
-      }));
+      if(this.stockFiltered.length > 0){
+        let limit = this.maxItems;
+        let startIndex = getStartIndex(this.maxItems, bIndex);
+        this.stockShow = this.stockFiltered.map((item, index) => {
+          if(limit > 0){
+            if(index >= startIndex){
+              --limit;
+              return (
+                <OneStock business={this.props.business} getStock={this.getStock} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+              );
+            }
+          }
+          else{
+            if(limit === 0){
+              this.lastIndex = index;
+            }
+          }
+        });
+        //re-render caused by changing state of filter text
+        this.setPagination(this.stockFiltered, bIndex);
+        this.setState((prevState) => ({
+          gotStock: !(prevState.gotStock),
+        }));
+      }
+      else{
+        this.pagination = '';
+        this.stockShow = <h6>No stock item matches your search</h6>;
+      }
     }
     else{
-      this.stockShow = <div className="text-center">No stock was found</div>
-      this.setState((prevState) => ({
-        gotStock: !(prevState.gotStock),
-      }));
+      let limit = this.maxItems;
+      let startIndex = getStartIndex(this.maxItems, bIndex);
+      if(this.stock.length > 0){
+        this.stockShow = this.stock.map((item, index) => {
+          if(limit > 0){
+            if(index >= startIndex){
+              --limit;
+              return (
+                <OneStock business={this.props.business} getStock={this.getStock} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+              );
+            }
+          }
+          else{
+            if(limit === 0){
+              this.lastIndex = index;
+            }
+          }
+        });
+        this.setPagination(this.stock, bIndex);
+        this.setState((prevState) => ({
+          gotStock: !(prevState.gotStock),
+        }));
+      }
+      else{
+        this.pagination = '';
+        this.stockShow = <div className="text-center">No stock was found</div>
+        this.setState((prevState) => ({
+          gotStock: !(prevState.gotStock),
+        }));
+      }
     }
+  }
+
+  pageTo = (index) => {
+    //console.log(index)
+    this.setStockShow(this.state.filterString, index);
+    this.setState({
+      batchIndex: index,
+    }, () => {
+      $("html, body").animate({ scrollTop: 0 }, "slow");
+    })
+  }
+
+  setPagination = (arr, currentIndex = 0) => {
+    //console.log(arr.length / this.maxItems);
+    let noPages = Math.trunc(arr.length / this.maxItems);
+    let pages = [];
+    for(let i = 0; i <= noPages; i++){
+      pages.push(i);
+    }
+
+    let pgBtns = '';
+
+    pgBtns = pages.map((item, i) => {
+      return (
+        <li onClick={() => { this.pageTo(item) }} key={currentIndex+"_"+i} className={(item === currentIndex) ? "page-item active" : "page-item"}>
+          <a className="page-link">{Number(item) + 1}</a>
+        </li>
+      )
+    });
+
+    let prevIndex = currentIndex - 1;
+    let nextIndex = currentIndex + 1;
+    let prevBtn = '';
+    let nextBtn = '';
+
+    if(pages.indexOf(prevIndex) > -1){
+      prevBtn = (
+        <li key={"prev"} className={"page-item"} onClick={() => { this.pageTo(prevIndex) }}>
+          <a className="page-link" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span className="sr-only">Previous</span>
+          </a>
+        </li>
+      )
+    }
+
+    if(pages.indexOf(nextIndex) > -1){
+      nextBtn = (
+        <li key={"next"} className="page-item" onClick={() => { this.pageTo(nextIndex) }}>
+          <a className="page-link" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span className="sr-only">Next</span>
+          </a>
+        </li>
+      )
+    }
+
+    this.pagination = (
+      <nav aria-label="Navigation Pagination">
+        <ul className="pagination pagination-sm">
+        {prevBtn}
+        {pgBtns}
+        {nextBtn}
+        </ul>
+      </nav>
+    )
   }
 
   componentDidMount(){
@@ -86,7 +219,7 @@ export default class Stock extends Component{
                       <CgExtension className="mIcon"/>
                     </div>
                     <div className="align-self-center flex-grow-1 text-right p-2">
-                      <h1>{numberFormat(3000)}</h1>
+                      <h1>{numberFormat(this.stock.length)}</h1>
                       <h6>Stock Items</h6>
                     </div>
                   </div>
@@ -100,7 +233,7 @@ export default class Stock extends Component{
                       <AiOutlineStock className="mIcon"/>
                     </div>
                     <div className="align-self-center flex-grow-1 text-right p-2">
-                      <h1>{numberFormat(3000)}</h1>
+                      <h1>{numberFormat(this.stockValue, 1)}</h1>
                       <h6>Stock Value in {this.props.business.info['currency']}</h6>
                     </div>
                   </div>
@@ -123,7 +256,7 @@ export default class Stock extends Component{
             <div className="card">
               <div className="card-body">
                 <div style={{ width:"100%"}}>
-                  <MDBInput style={{ }} label="Search stock list" size="sm" icon="search" />
+                  <MDBInput value={this.state.filterString} onChange={(e) => {this.handleFilter(e)}} style={{ }} label="Filter stock list by title" size="sm" icon="search" />
                 </div>
 
                 <div style={{ width:"100%"}}>
@@ -131,7 +264,7 @@ export default class Stock extends Component{
                 </div>
 
                 <div style={{ width:"100%"}} className="text-center">
-                  {/* pagination*/}
+                  {this.pagination}
                 </div>
 
               </div>
