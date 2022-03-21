@@ -25,7 +25,7 @@ export default class AddStock extends Component{
       let unit = $('#unit').val();
       let sPrice = $('#sPrice').val();
       let bPrice = $('#bPrice').val();
-      
+
       if(validateStr(title)){
         if(validateStr(quantity) && !isNaN(quantity)){
           quantity = Number(quantity);
@@ -47,7 +47,6 @@ export default class AddStock extends Component{
                   this.setState({ loading: false });
                   if(result === true){
                     tellUser('Saving successful..');
-                    document.getElementById('title').value = '';
                   }
                   else{
                     tellUser('Error occured, please contact support.');
@@ -83,14 +82,15 @@ export default class AddStock extends Component{
   render(){
     return (
       <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <div className="card">
-              <div className="card-body">
-
+        <div className="card">
+          <div className="card-body">
+            <div className="row">
+              <div className="col-md-6">
                 <MDBInput id="title" label="Title*" type="text"/>
                 <MDBInput id="quantity" label="Quantity*" type="number"/>
                 <MDBInput id="unit" label="Unit* (pieces, sets, Kg, etc..)" type="text"/>
+              </div>
+              <div className="col-md-6">
                 <MDBInput id="bPrice" label="Buying Price Per 1 Unit  (Optional)" type="number"/>
                 <MDBInput id="sPrice" label="Selling Price Per 1 unit (Optional)" type="number"/>
 

@@ -7,6 +7,7 @@ export default class NavBar extends Component{
   constructor(props){
     super(props);
     this.state = {
+      openNav: false,
       navTo: props.navTo,
     }
 

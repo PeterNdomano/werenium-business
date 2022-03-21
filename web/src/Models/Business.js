@@ -9,6 +9,33 @@ class Business{
     this.db = db;
   }
 
+  editStock = async (item) => {
+    let stock = this.db.getSchema().table('stock');
+    return (
+      await this.db.update(stock)
+                    .set(stock.title, item.title)
+                    .set(stock.quantity, item.quantity)
+                    .set(stock.unit, item.unit)
+                    .set(stock.bPrice, item.bPrice)
+                    .set(stock.sPrice, item.sPrice)
+                    .where(stock.id.eq(item.id))
+                    .exec()
+                    .then((res) => {
+                      return true;
+                    })
+    );
+  }
+
+  deleteStock = async (id) => {
+    let stock = this.db.getSchema().table('stock');
+    return (
+      await this.db.delete().from(stock).where(stock.id.eq(id)).exec().then(() => {
+        return true;
+      })
+    );
+
+  }
+
   getStock = async () => {
     let stock = this.db.getSchema().table('stock');
     return (

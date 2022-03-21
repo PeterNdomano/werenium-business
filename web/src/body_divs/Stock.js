@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { CgExtension } from 'react-icons/cg';
 import { AiOutlineStock, AiOutlineAppstoreAdd } from 'react-icons/ai';
-import { numberFormat } from '../Helper';
+import { numberFormat, getLoader } from '../Helper';
 import OneStock from '../ones/OneStock';
 import { MDBInput } from 'mdbreact';
 import AddStock from '../views/AddStock';
@@ -9,13 +9,69 @@ import AddStock from '../views/AddStock';
 
 export default class Stock extends Component{
 
+  constructor(props){
+    super(props);
+    this.state = {
+      gotStock: false,
+    };
+
+    this.stockShow = getLoader();
+    this.stock = [];
+    this.maxItems = 10;
+
+  }
+
   addStock = () => {
     this.props.openViewer(
       "Add Items To Stock",
-      <AddStock business={this.props.business}/>
+      <AddStock  business={this.props.business}/>
     );
   }
 
+  getStock = async (show = false) => {
+    this.stock = await this.props.business.getStock();
+    if(show){
+      this.setStockShow();
+    }
+  }
+
+  setStockShow = () => {
+    let limit = this.maxItems;
+    if(this.stock.length > 0){
+      this.stockShow = this.stock.map((item, index) => {
+        if(limit > 0){
+          --limit;
+          return (
+            <OneStock business={this.props.business} getStock={this.getStock} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+          );
+        }
+        else{
+          if(limit === 0){
+            this.lastIndex = index;
+          }
+        }
+      });
+
+      this.setState((prevState) => ({
+        gotStock: !(prevState.gotStock),
+      }));
+    }
+    else{
+      this.stockShow = <div className="text-center">No stock was found</div>
+      this.setState((prevState) => ({
+        gotStock: !(prevState.gotStock),
+      }));
+    }
+  }
+
+  componentDidMount(){
+    (
+      async () => {
+        await this.getStock();
+        this.setStockShow();
+      }
+    )();
+  }
 
   render(){
     return (
@@ -71,10 +127,7 @@ export default class Stock extends Component{
                 </div>
 
                 <div style={{ width:"100%"}}>
-                  <OneStock/>
-                  <OneStock/>
-                  <OneStock/>
-                  <OneStock/>
+                  {this.stockShow}
                 </div>
 
                 <div style={{ width:"100%"}} className="text-center">

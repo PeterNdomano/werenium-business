@@ -13,11 +13,10 @@ export default class MainBody extends Component{
   constructor(props){
     super(props);
     this.state = {
-      showViewer: false,
-      viewerTitle: "",
       navTo: props.navTo,
     };
     this.initialize(props);
+
   }
 
   componentDidMount(){
@@ -29,39 +28,20 @@ export default class MainBody extends Component{
   }
 
   UNSAFE_componentWillReceiveProps(props){
-    this.closeViewer();
     this.initialize(props)
-    this.setState({
-      navTo: props.navTo,
-    })
   }
 
   closeViewer = () => {
-    this.setState({
-      showViewer: false,
-    }, () => {
-      this.initialize(this.props);
-      this.setState({
-        viewerTitle: "",
-      })
-    });
-
+    this.props.closeViewer();
   }
 
   openViewer = (title, view) => {
-    this.setState({
-      showViewer: true,
-    }, () => {
-      this.initialize(this.props, view, title);
-      this.setState({
-        viewerTitle: title,
-      })
-    })
+    this.props.openViewer(title, view);
   }
 
-  setTitle = (props, title = null) => {
-    if(this.state.showViewer){
-      this.title = title;
+  setTitle = (props) => {
+    if(props.showViewer){
+      this.title = props.viewerTitle;
     }
     else{
       switch(props.navTo){
@@ -87,10 +67,10 @@ export default class MainBody extends Component{
     }
   }
 
-  setView = (props, view = null) => {
+  setView = (props) => {
     //console.log(props.business);
-    if(this.state.showViewer){
-      this.view = view;
+    if(props.showViewer){
+      this.view = props.view;
     }
     else{
       switch(props.navTo){
@@ -98,7 +78,7 @@ export default class MainBody extends Component{
           this.view = <Home/>;
           break;
         case "stock":
-          this.view = <Stock openViewer={this.openViewer} business={props.business}/>;
+          this.view = <Stock showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.openViewer} business={props.business}/>;
           break;
         case "sales":
           this.view = <Sales/>;
@@ -116,22 +96,22 @@ export default class MainBody extends Component{
     }
   }
 
-  initialize = (props, view = null, title = null) => {
+  initialize = (props) => {
     //set title
-    this.setTitle(props, title);
+    this.setTitle(props);
     //set view
-    this.setView(props, view);
+    this.setView(props);
   }
 
   render(){
-    $("html, body").animate({ scrollTop: 0 }, "slow");
+    //$("html, body").animate({ scrollTop: 0 }, "slow");
 
     return (
       <div className="MainBody">
         <div className="mTitle z-depth-1">
           <div className="container d-flex">
             {
-              (this.state.showViewer) ?
+              (this.props.showViewer) ?
               <div style={{ cursor:"pointer" }} onClick={() => this.closeViewer()} className="align-self-center">
                 <MdOutlineArrowBack size={30}/>
                 &nbsp;&nbsp;&nbsp;

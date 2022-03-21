@@ -73,6 +73,14 @@ body, html{
 .btn{
   font-family: "OpenSansRegular";
 }
+
+.mEditable{
+  outline: none;
+}
+
+.mEditable:focus{
+  outline: none;
+}
 /*----------- 2. COMPONENTS STYLING ------------*/
 
 
@@ -243,6 +251,7 @@ body, html{
   top: var(--topBarHeight);
   left: 0;
   right: 0;
+  overflow: hidden;
 }
 
 .MainBody > .mTitle > .container{

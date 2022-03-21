@@ -1,5 +1,6 @@
 import  React, { Component } from 'react';
 import ConfirmDialog from './components/ConfirmDialog';
+import Dialog from './components/Dialog';
 import Loader from './components/Loader';
 import MainBody from './components/MainBody';
 import MainLoader from './components/MainLoader';
@@ -9,6 +10,7 @@ import Footer from './components/Footer';
 import { hideLoader, tellUser } from './Helper';
 import { connect } from './Models/Database';
 import { createBusiness } from './Models/Business';
+import $ from 'jquery';
 
 export default class App extends Component {
   constructor(props){
@@ -19,17 +21,26 @@ export default class App extends Component {
       showLoader: true,
       showDialog: false,
       dbConnect: false,
+      showViewer: false,
+      viewerTitle: "",
+      showDialogView: false,
     };
+
+    this.view = null;
 
     this.ConfirmDialog = <ConfirmDialog
                             action=""
                             msg=""
                             showDialog={this.state.showDialog}
                           />
+    this.Dialog = <Dialog
+                        view={null}
+                        title=""
+                        showDialogView={this.state.showDialogView}
+                      />
   }
 
   UNSAFE_componentWillReceiveProps(props){
-    //alert(props.navTo);
     (async () => {
       await this.initialize();
       this.realNavTo(props.navTo);
@@ -37,10 +48,31 @@ export default class App extends Component {
 
   }
 
+  closeViewer = () => {
+    this.view = null;
+    this.setState({
+      showViewer: false,
+      viewerTitle: "",
+    });
+
+  }
+
+  openViewer = (title, view) => {
+    this.view = view;
+    this.setState({
+      showViewer: true,
+      viewerTitle: title,
+    });
+  }
+
+
   componentDidMount(){
     (async () => {
       await this.initialize();
     })();
+    $('#dialog').on('show.bs.modal', function(e){
+      alert('hidden');
+    })
   }
 
   componentWillUnmount(){
@@ -70,6 +102,17 @@ export default class App extends Component {
                           />
     this.setState({
       showDialog: true
+    });
+  }
+
+  showDialogView = (view, title) => {
+    this.Dialog = <Dialog
+                        view={view}
+                        title={title}
+                        showDialogView={true}
+                      />
+    this.setState({
+      showDialogView: true
     });
   }
 
@@ -106,15 +149,26 @@ export default class App extends Component {
   }
 
   render(){
-    return (
-      <div>
-        {this.ConfirmDialog}
-        <MainLoader showLoader={this.state.showLoader}/>
-        <TopBar toggleNavCallback={this.toggleNav}/>
-        <NavBar navTo={this.state.navTo} navToCallback={this.navTo} closeNavCallback={this.closeNav} openNav={this.state.openNav}/>
-        <MainBody navTo={this.state.navTo} business={this.business}/>
-        <Footer/>
-      </div>
-    );
+    if(this.state.dbConnect){
+      return (
+        <div>
+          {this.ConfirmDialog}
+          {this.Dialog}
+          <MainLoader showLoader={this.state.showLoader}/>
+          <TopBar toggleNavCallback={this.toggleNav}/>
+          <NavBar navTo={this.state.navTo} navToCallback={this.navTo} closeNavCallback={this.closeNav} openNav={this.state.openNav}/>
+          <MainBody showDialogView={this.showDialogView} viewerTitle={this.state.viewerTitle} showViewer={this.state.showViewer} view={this.view} closeViewer={this.closeViewer} openViewer={this.openViewer} showDialog={this.showDialog} navTo={this.state.navTo} business={this.business}/>
+          <Footer/>
+        </div>
+      );
+    }
+    else{
+      return (
+        <div>
+          <MainLoader showLoader={true}/>
+        </div>
+      );
+    }
+
   }
 }
