@@ -9,6 +9,7 @@ import { showLoader,
   validateStr,
 } from '../Helper';
 import SaleRow from '../ones/SaleRow';
+import { MdAdd } from 'react-icons/md';
 
 export default class NewSale extends Component{
 
@@ -19,16 +20,23 @@ export default class NewSale extends Component{
       rowsChanged: false,
     }
 
-    //this.rows = [<SaleRow key={"_row"+0}/>];
-    this.rows = [<SaleRow key={"_row"+0}/>];
+    this.total = 0;
+    this.rows = [<SaleRow index={0} key={"_row"+0} deleteRow={this.deleteRow}/>];
   }
 
   componentDidMount(){
 
   }
 
+  deleteRow = (i) => {
+    this.row.splice(i, 1);
+    this.setState((prevState) => ({
+      rowsChanged: !prevState.rowsChanged,
+    }))
+  }
+
   addRow = () => {
-    this.rows.push(<SaleRow key={"_row"+this.rows.length}/>);
+    this.rows.push(<SaleRow index={this.rows.length} key={"_row"+this.rows.length} deleteRow={this.deleteRow}/>);
     this.setState((prevState) => ({
       rowsChanged: !prevState.rowsChanged,
     }))
@@ -61,21 +69,21 @@ export default class NewSale extends Component{
 
             <div className="row">
               <div className="col-md-12 text-right" style={{ marginTop:"0px", marginBottom:"10px"}}>
-                <button onClick={() => { this.addRow() }} className="btn btn-sm btn-dark text-light">Add Row</button>
+                <button onClick={() => { this.addRow() }} className="btn btn-sm btn-dark text-light"><MdAdd size={12}/>Add Row</button>
               </div>
             </div>
 
             <div className="row">
               <div className="col-md-12 text-right" style={{ marginTop:"20px", marginBottom:"10px"}}>
                 <hr/>
-                <h3>{50000} {this.props.business.info.currency}</h3>
+                <h3>{this.total} {this.props.business.info.currency}</h3>
                 <h6 className="text-warning font-regular">Grand Total</h6>
               </div>
             </div>
 
             <div className="row">
               <div className="col-md-6 text-left" style={{ marginTop:"10px", marginBottom:"10px"}}>
-                <button onClick={() => { this.save() }} className="btn btn-warning text-dark">Save Sale</button>
+                <button onClick={() => { this.save() }} className="btn btn-warning text-dark">Record Sale</button>
               </div>
             </div>
 

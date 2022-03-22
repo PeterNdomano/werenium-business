@@ -8,7 +8,7 @@ export default class Sales extends Component{
 
   newSale = () => {
     this.props.openViewer(
-      "Make New Sale",
+      "Record New Sale",
       <NewSale  business={this.props.business}/>
     );
   }
@@ -39,7 +39,7 @@ export default class Sales extends Component{
                 <div className="card introCard" style={{ cursor:"pointer" }}>
                   <button onClick={() => this.newSale()} style={{ width:"100%", height:"100%", margin:"0px"}} className="btn btn-success">
                     <AiOutlineAppstoreAdd className="mIcon"/><br/>
-                    <h6>Make New Sale</h6>
+                    <h6>Record New Sale</h6>
                   </button>
                 </div>
               </div>

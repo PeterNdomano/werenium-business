@@ -392,6 +392,29 @@ body, html{
   }
 }
 
+.SaleRow label{
+  width: 100%;
+  font-size: 12px;
+  margin: 0px;
+  padding: 0px;
+  margin-left: 10px;
+  color: var(--accentColor);
+  font-family: "OpenSansRegular";
+}
+
+.SaleRow input:focus{
+  box-shadow: none;
+}
+
+.SaleRow input[readOnly]{
+  background: none;
+}
+
+.SaleRow input{
+  border-radius: 0px !important;
+  border: none;
+  box-shadow: none;
+}
 
 .SaleRow > div{
   padding: 0px;
