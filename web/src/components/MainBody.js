@@ -81,7 +81,7 @@ export default class MainBody extends Component{
           this.view = <Stock showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.openViewer} business={props.business}/>;
           break;
         case "sales":
-          this.view = <Sales/>;
+          this.view = <Sales showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.openViewer} business={props.business}/>;
           break;
         case "invoicing":
           this.view = <Invoicing/>;

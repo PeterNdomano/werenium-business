@@ -344,3 +344,55 @@ body, html{
   width: 20px;
   height: 20px;
 }
+
+/*-----------------Sales--------------*/
+.Sales{
+  color: var(--darkColor);
+}
+
+.Sales .introCard{
+  height: 150px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.Sales .introCard .d-flex{
+  height: 100%;
+}
+
+.Sales .introCard h1{
+  font-size: 45px;
+  font-family: "OpenSansRegular";
+  color: var(--lightColor);
+}
+
+.Sales .introCard h6{
+  font-size: 15px;
+  font-family: "OpenSansRegular";
+}
+
+.Sales .introCard .mIcon{
+  width: 80px;
+  height: 80px;
+  color: var(--lightColor);
+}
+
+/*-----------salesRow and related stuffs-------------*/
+.SaleRow{
+  border: 0px solid var(--accentColor);
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+@media only screen and (max-width: 767.98px) {
+  .SaleRow{
+    border: 0px solid var(--accentColor);
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+}
+
+
+.SaleRow > div{
+  padding: 0px;
+}
