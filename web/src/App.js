@@ -139,7 +139,8 @@ export default class App extends Component {
 
   realNavTo = (navTo) => {
     this.setState({
-      navTo
+      navTo,
+      showViewer: false,
     });
   }
 

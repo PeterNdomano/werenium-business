@@ -1,6 +1,6 @@
 import { schema, Type,} from 'lovefield';
 
-const sb = schema.create('wb', 4);
+const sb = schema.create('wb', 6);
 
 //create businessInfo Table
 sb.createTable('businessInfo')
@@ -19,6 +19,12 @@ sb.createTable('stock')
   .addColumn('sPrice', Type.INTEGER)
   .addColumn('date', Type.DATE_TIME)
   .addPrimaryKey(['id'], true)
+
+sb.createTable('sales')
+  .addColumn('id', Type.INTEGER)
+  .addColumn('data', Type.OBJECT)
+  .addColumn('date', Type.DATE_TIME)
+  .addPrimaryKey(['id'], true);
 
 function onUpgrade(raw){
   //console.log(raw.getVersion());

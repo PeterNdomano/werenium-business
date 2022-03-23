@@ -82,11 +82,11 @@ export default class SaleRow extends Component{
     return (
       <div className="row SaleRow z-depth-1">
         <div className="col-md-3">
-          <label>Particular</label>
+          <label>Particular*</label>
           <input value={this.state.particular} onChange={(e) => this.handleParticular(e.target.value)} className="form-control" placeholder="Product/Service name or title" type="text"/>
         </div>
         <div className="col-md-2">
-          <label>Quantity</label>
+          <label>Quantity*</label>
           <input onChange={(e) => { this.handleQuantity(e.target.value) }} value={this.state.quantity} className="form-control" placeholder="Quantity" type="number"/>
         </div>
         <div className="col-md-2">
@@ -94,7 +94,7 @@ export default class SaleRow extends Component{
           <input value={this.state.unit} onChange={(e) => this.handleUnit(e.target.value)} className="form-control" placeholder="set, pcs, kg .." type="text"/>
         </div>
         <div className="col-md-2">
-          <label>Unit Price</label>
+          <label>Unit Price*</label>
           <input onChange={(e) => { this.handleUnitPrice(e.target.value) }} value={this.state.unitPrice} className="form-control" placeholder="Unit Price" type="number"/>
         </div>
         <div className="col-md-2">

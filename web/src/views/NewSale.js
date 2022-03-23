@@ -54,6 +54,78 @@ export default class NewSale extends Component{
     }))
   }
 
+  checkValidity = () => {
+    if(this.rowsData.length > 0){
+      for(let index = 0; index < this.rowsData.length; index++){
+        let item = this.rowsData[index];
+        if(item.particular.trim().length > 0){
+          if(item.quantity.trim().length > 0){
+            if(item.unitPrice.trim().length > 0){
+              if(index === (this.rowsData.length - 1)){
+                return true;
+              }
+            }
+            else{
+              tellUser('Write valid unit price for row '+(index+1));
+              break;
+            }
+          }
+          else{
+            tellUser('Write valid quantity for row '+(index+1));
+            break;
+          }
+        }
+        else{
+          tellUser('Write valid particular for row '+(index+1));
+          break;
+        }
+      }
+    }
+    else{
+      tellUser('Fill in some data in rows');
+    }
+    return false;
+  }
+
+  save = () => {
+    if(this.checkValidity() === true){
+      this.props.showDialog( async () => {
+        let date = new Date($('#cDate').val());
+        let customerName = $('#cName').val();
+        let customerDetails = $('#cDetails').val();
+
+        let data = {
+          customerName,
+          customerDetails,
+          total: this.total,
+          soldItems: this.rowsData,
+        };
+
+        if(!isNaN(date.getTime())){
+          this.setState({ loading: true });
+          await this.business.saveSale({
+            date,
+            data,
+          }).then((result) => {
+            if(result === true){
+              this.setState({ loading: false });
+            }
+            else{
+              this.setState({ loading: false });
+              tellUser('Unknown error occured, contact support');
+            }
+          })
+        }
+        else{
+          tellUser('Invalid date');
+        }
+
+
+      }, 'This Sale will be recorded');
+    }
+
+  }
+
   deleteRow = (index) => {
     this.rows.forEach((item, i) => {
       if(item.props.index === index){
@@ -74,6 +146,8 @@ export default class NewSale extends Component{
 
 
   render(){
+    let date = new Date();
+    let today = date.toISOString().substr(0, 10);
     return (
       <div className="container">
         <div className="card">
@@ -85,6 +159,10 @@ export default class NewSale extends Component{
               <div className="col-md-6">
                 <MDBInput id="cDetails" label="Customer Details eg Phone, Address (Optional)" type="text"/>
               </div>
+              <div className="col-md-6">
+                <MDBInput valueDefault={today} id="cDate" label="Date*" type="date"/>
+              </div>
+
             </div>
 
             <div className="row">
@@ -113,7 +191,13 @@ export default class NewSale extends Component{
 
             <div className="row">
               <div className="col-md-6 text-left" style={{ marginTop:"10px", marginBottom:"10px"}}>
-                <button onClick={() => { this.save() }} className="btn btn-warning text-dark">Record Sale</button>
+                <button onClick={() => { this.save() }} className="btn btn-warning text-dark">
+                  {
+                    (this.state.loading) ?
+                    getLoader() :
+                    "Record Sale"
+                  }
+                </button>
               </div>
             </div>
 

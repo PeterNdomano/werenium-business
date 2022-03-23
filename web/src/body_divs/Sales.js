@@ -9,7 +9,7 @@ export default class Sales extends Component{
   newSale = () => {
     this.props.openViewer(
       "Record New Sale",
-      <NewSale  business={this.props.business}/>
+      <NewSale showDialog={this.props.showDialog}  business={this.props.business}/>
     );
   }
 
