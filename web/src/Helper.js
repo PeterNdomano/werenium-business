@@ -63,6 +63,10 @@ export function getStartIndex(batchSize, batchIndex){
   return (batchSize * batchIndex);
 }
 
+export function thousandSeps(num){
+  return num;
+}
+
 export function numberFormat(num, digits = 3){
   num = Number.parseFloat(num);
   const lookup = [

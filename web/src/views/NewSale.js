@@ -7,6 +7,7 @@ import { showLoader,
   tellUser,
   validateNum,
   validateStr,
+  thousandSeps,
 } from '../Helper';
 import SaleRow from '../ones/SaleRow';
 import { MdAdd } from 'react-icons/md';
@@ -20,23 +21,52 @@ export default class NewSale extends Component{
       rowsChanged: false,
     }
 
+    this.rowsData = [];
     this.total = 0;
-    this.rows = [<SaleRow index={0} key={"_row"+0} deleteRow={this.deleteRow}/>];
+    this.rows = [<SaleRow sumUp={this.sumUp} index={0} key={"_row"+0+"_"+Math.random()} deleteRow={this.deleteRow}/>];
   }
 
   componentDidMount(){
 
   }
 
-  deleteRow = (i) => {
-    this.row.splice(i, 1);
+  sumUp = () => {
+    this.rowsData = [];
+    let total = 0;
+    let itemsContainer = document.getElementById('soldItems');
+    for(let i = 0; i < itemsContainer.children.length; i++){
+      let itemRow = itemsContainer.children[i];
+      let particular = itemRow.children[0].children[1].value;
+      let quantity = itemRow.children[1].children[1].value;
+      let unit = itemRow.children[2].children[1].value;
+      let unitPrice = itemRow.children[3].children[1].value;
+      let subTotal = itemRow.children[4].children[1].value;
+      total += Number(subTotal);
+      this.rowsData.push({
+        particular, quantity, unit, unitPrice, subTotal
+      });
+    }
+
+    this.total = total;
+
+    this.setState((prevState) => ({
+      rowsChanged: !prevState.rowsChanged,
+    }))
+  }
+
+  deleteRow = (index) => {
+    this.rows.forEach((item, i) => {
+      if(item.props.index === index){
+        this.rows.splice(i, 1);
+      }
+    })
     this.setState((prevState) => ({
       rowsChanged: !prevState.rowsChanged,
     }))
   }
 
   addRow = () => {
-    this.rows.push(<SaleRow index={this.rows.length} key={"_row"+this.rows.length} deleteRow={this.deleteRow}/>);
+    this.rows.push(<SaleRow sumUp={this.sumUp} index={this.rows.length} key={"_row"+this.rows.length+"_"+Math.random()} deleteRow={this.deleteRow}/>);
     this.setState((prevState) => ({
       rowsChanged: !prevState.rowsChanged,
     }))
@@ -76,7 +106,7 @@ export default class NewSale extends Component{
             <div className="row">
               <div className="col-md-12 text-right" style={{ marginTop:"20px", marginBottom:"10px"}}>
                 <hr/>
-                <h3>{this.total} {this.props.business.info.currency}</h3>
+                <h3>{thousandSeps(this.total)} {this.props.business.info.currency}</h3>
                 <h6 className="text-warning font-regular">Grand Total</h6>
               </div>
             </div>
