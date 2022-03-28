@@ -91,41 +91,59 @@ export default class NewSale extends Component{
   }
 
   save = () => {
-    if(this.checkValidity() === true){
-      this.props.showDialog( async () => {
-        let date = new Date($('#cDate').val());
-        let customerName = $('#cName').val();
-        let customerDetails = $('#cDetails').val();
+    if(!this.state.loading){
+      if(this.checkValidity() === true){
+        this.props.showDialog( async () => {
+          let date = new Date($('#cDate').val());
+          let customerName = $('#cName').val();
+          let customerDetails = $('#cDetails').val();
+          let amountPaid = $('#cAmountPaid').val();
 
-        let data = {
-          customerName,
-          customerDetails,
-          total: this.total,
-          soldItems: this.rowsData,
-        };
+          let data = {
+            customerName,
+            customerDetails,
+            amountPaid,
+            total: this.total,
+            soldItems: this.rowsData,
+          };
 
-        if(!isNaN(date.getTime())){
-          this.setState({ loading: true });
-          await this.props.business.saveSale({
-            date,
-            data,
-          }).then((result) => {
-            if(result === true){
-              this.setState({ loading: false });
-              tellUser('Saving successful...');
+          if(amountPaid.trim().length > 0){
+            if(!isNaN(Number(amountPaid))){
+              if(!isNaN(date.getTime())){
+                this.setState({ loading: true });
+                await this.props.business.saveSale({
+                  date,
+                  data,
+                }).then((result) => {
+                  if(result === true){
+                    this.setState({ loading: false });
+                    tellUser('Saving successful...');
+                  }
+                  else{
+                    this.setState({ loading: false });
+                    tellUser('Unknown error occured, contact support');
+                  }
+                })
+              }
+              else{
+                tellUser('Invalid date');
+              }
+
             }
             else{
-              this.setState({ loading: false });
-              tellUser('Unknown error occured, contact support');
+              tellUser('Please specify valid amount paid by this customer');
             }
-          })
-        }
-        else{
-          tellUser('Invalid date');
-        }
+          }
+          else{
+            tellUser('Please specify amount paid by this customer');
+          }
 
 
-      }, 'This Sale will be recorded');
+        }, 'This Sale will be recorded');
+      }
+    }
+    else{
+      tellUser('Please wait...');
     }
 
   }
@@ -171,7 +189,9 @@ export default class NewSale extends Component{
 
             <div className="row">
               <div className="col-md-12" style={{ marginTop:"20px", marginBottom:"10px"}}>
-                <h6>Fill in items sold to this customer below</h6>
+                <h6 className="text-danger font-regular" style={{ fontSize:"12px" }}>
+                  Fill in items sold to this customer below
+                </h6>
               </div>
             </div>
 
@@ -185,17 +205,25 @@ export default class NewSale extends Component{
               </div>
             </div>
 
+            <hr/>
+
             <div className="row">
-              <div className="col-md-12 text-right" style={{ marginTop:"20px", marginBottom:"10px"}}>
-                <hr/>
+              <div className="col-md-6">
+                <MDBInput id="cAmountPaid" valueDefault="0" label="Amount Paid By Customer Currently" type="number"/>
+                <h6 className="text-danger font-regular" style={{ fontSize:"12px" }}>
+                  If less than {thousandSeps(this.total)} is paid now this customer will be added to debts
+                </h6>
+              </div>
+
+              <div className="col-md-6 text-right" style={{ marginTop:"20px", marginBottom:"10px"}}>
                 <h3>{thousandSeps(this.total)} {this.props.business.info.currency}</h3>
-                <h6 className="text-warning font-regular">Grand Total</h6>
+                <h6 className="text-warning font-regular">Grand Total Due</h6>
               </div>
             </div>
 
             <div className="row">
-              <div className="col-md-6 text-left" style={{ marginTop:"10px", marginBottom:"10px"}}>
-                <button onClick={() => { this.save() }} className="btn btn-warning text-dark">
+              <div className="col-md-6 text-left" style={{ marginTop:"30px", marginBottom:"10px", padding:"10px"}}>
+                <button onClick={() => { this.save() }} className="btn btn-warning text-dark" >
                   {
                     (this.state.loading) ?
                     getLoader() :

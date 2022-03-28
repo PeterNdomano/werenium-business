@@ -9,12 +9,103 @@ class Business{
     this.db = db;
   }
 
+  saveStockHist = async (stockHist) => {
+    let stockHistory = this.db.getSchema().table('stockHistory');
+    let row = stockHistory.createRow(stockHist);
+    return (
+      await this.db.insertOrReplace().into(stockHistory).values([row]).exec().then((row) => {
+        return row;
+      })
+    )
+  }
+
+  saveCustomer = async (customer) => {
+    let customers = this.db.getSchema().table('customers');
+    let row = customers.createRow(customer);
+    return (
+      await this.db.insertOrReplace().into(customers).values([row]).exec().then((row) => {
+        return row;
+      })
+    )
+  }
+
+  saveAccountReceivable =  async (ar) => {
+    let receivables = this.db.getSchema().table('receivableAccounts');
+    let row = receivables.createRow(ar);
+    return (
+      await this.db.insertOrReplace().into(receivables).values([row]).exec().then((row) => {
+        return row;
+      })
+    )
+  }
+
   saveSale = async (sale) => {
+    //process stockHistory
+    let stockList = await this.getStock();
+    sale.data.soldItems.forEach(async (item, i) => {
+      let stockId = null;
+      stockList.forEach((stock) => {
+        if(stock.title === item.particular){
+          stockId = stock.id;
+          return;
+        }
+      });
+
+      if(stockId !== null){
+        let stockHist = {
+          stockId,
+          amount: item.quantity,
+          action: 'sell',
+          date: sale.date,
+        }
+
+        let insertHist = await this.saveStockHist(stockHist);
+        sale.data.soldItems[i].stockHistId = insertHist[0].id;
+      }
+      else{
+        sale.data.soldItems[i].stockHistId = 0;
+      }
+    });
+
+    //process account receivable
+    let ar = {
+      date: sale.date,
+      amountDue: sale.data.total,
+      amountPaid: sale.data.amountPaid,
+      paymentHistory: [{
+        date: sale.date,
+        amount: sale.data.amountPaid,
+      }],
+      ref: 'sales',
+      refId: 0,
+    }
+
+    let insertAr = await this.saveAccountReceivable(ar);
+    sale.arId = insertAr[0].id;
+
+    //save customer data if available // TODO: Keeping track of customers
+    // if(sale.data.customerName.trim().length > 0 && sale.data.customerDetails.trim().length > 0){
+    //   let customer = {
+    //     name: sale.data.customerName,
+    //     details: sale.data.customerDetails,
+    //     date: new Date(),
+    //   }
+    //   await this.saveCustomer(customer);
+    // }
+
+    //then insert sale and update accountReceivable table
     let sales = this.db.getSchema().table('sales');
     let row = sales.createRow(sale);
+    let arTable = this.db.getSchema().table('receivableAccounts');
     return (
-      await this.db.insertOrReplace().into(sales).values([row]).exec().then((rows) => {
-        return true;
+      await this.db.insertOrReplace().into(sales).values([row]).exec().then((row) => {
+        return this.db.update(arTable)
+                      .set(arTable.refId, row[0].id)
+                      .where(arTable.id.eq(insertAr[0].id))
+                      .exec()
+                      .then(() => {
+                        return true;
+                      })
       })
     )
   }

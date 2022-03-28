@@ -1,6 +1,6 @@
 import { schema, Type,} from 'lovefield';
 
-const sb = schema.create('wb', 6);
+const sb = schema.create('wb', 11);
 
 //create businessInfo Table
 sb.createTable('businessInfo')
@@ -26,10 +26,40 @@ sb.createTable('sales')
   .addColumn('date', Type.DATE_TIME)
   .addPrimaryKey(['id'], true);
 
-function onUpgrade(raw){
+sb.createTable('stockHistory')
+  .addColumn('id', Type.INTEGER)
+  .addColumn('stockId', Type.INTEGER)
+  .addColumn('amount', Type.INTEGER)
+  .addColumn('action', Type.STRING)
+  .addColumn('date', Type.DATE_TIME)
+  .addPrimaryKey(['id'], true);
+
+
+
+sb.createTable('receivableAccounts')
+  .addColumn('id', Type.INTEGER)
+  .addColumn('refId', Type.INTEGER)
+  .addColumn('ref', Type.STRING)
+  .addColumn('amountDue', Type.INTEGER)
+  .addColumn('amountPaid', Type.INTEGER)
+  .addColumn('paymentHistory', Type.OBJECT)
+  .addColumn('date', Type.DATE_TIME)
+  .addPrimaryKey(['id'], true);
+
+sb.createTable('customers')
+  .addColumn('id', Type.INTEGER)
+  .addColumn('name', Type.STRING)
+  .addColumn('details', Type.STRING)
+  .addColumn('date', Type.DATE_TIME)
+  .addPrimaryKey(['id'], true);
+
+function onUpgrade(rawDb){
   //console.log(raw.getVersion());
   //handle database upgrade here
-  return raw.dump();
+  return rawDb.addTableColumn('sales', 'arId', 0).then(() => {
+      return rawDb.dump();
+  })
+
 }
 
 export function connect(){
