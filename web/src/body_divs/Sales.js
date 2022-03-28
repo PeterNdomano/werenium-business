@@ -16,7 +16,7 @@ export default class Sales extends Component{
 
   render(){
     return (
-      <div className="container Stock">
+      <div className="container Sales">
         <div className="row">
           <div className="col-sm-12 col-md-12">
             <div className="row">

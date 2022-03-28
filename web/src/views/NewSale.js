@@ -21,14 +21,17 @@ export default class NewSale extends Component{
       rowsChanged: false,
     }
 
+
     this.rowsData = [];
     this.total = 0;
-    this.rows = [<SaleRow sumUp={this.sumUp} index={0} key={"_row"+0+"_"+Math.random()} deleteRow={this.deleteRow}/>];
+    this.rows = [<SaleRow business={this.props.business} sumUp={this.sumUp} index={0} key={"_row"+0+"_"+Math.random()} deleteRow={this.deleteRow}/>];
   }
 
   componentDidMount(){
 
   }
+
+
 
   sumUp = () => {
     this.rowsData = [];
@@ -103,12 +106,13 @@ export default class NewSale extends Component{
 
         if(!isNaN(date.getTime())){
           this.setState({ loading: true });
-          await this.business.saveSale({
+          await this.props.business.saveSale({
             date,
             data,
           }).then((result) => {
             if(result === true){
               this.setState({ loading: false });
+              tellUser('Saving successful...');
             }
             else{
               this.setState({ loading: false });
@@ -138,7 +142,7 @@ export default class NewSale extends Component{
   }
 
   addRow = () => {
-    this.rows.push(<SaleRow sumUp={this.sumUp} index={this.rows.length} key={"_row"+this.rows.length+"_"+Math.random()} deleteRow={this.deleteRow}/>);
+    this.rows.push(<SaleRow business={this.props.business} sumUp={this.sumUp} index={this.rows.length} key={"_row"+this.rows.length+"_"+Math.random()} deleteRow={this.deleteRow}/>);
     this.setState((prevState) => ({
       rowsChanged: !prevState.rowsChanged,
     }))

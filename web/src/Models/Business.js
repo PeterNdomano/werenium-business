@@ -9,6 +9,16 @@ class Business{
     this.db = db;
   }
 
+  saveSale = async (sale) => {
+    let sales = this.db.getSchema().table('sales');
+    let row = sales.createRow(sale);
+    return (
+      await this.db.insertOrReplace().into(sales).values([row]).exec().then((rows) => {
+        return true;
+      })
+    )
+  }
+
   editStock = async (item) => {
     let stock = this.db.getSchema().table('stock');
     return (
