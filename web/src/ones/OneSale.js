@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { MdEdit, MdDelete, MdInfo } from 'react-icons/md';
-import ViewSale from '../views/ViewSale';
-import EditStock from '../views/EditStock';
+import ViewInvoice from '../views/ViewInvoice';
+import EditSale from '../views/EditSale';
 import { tellUser, thousandSeps } from '../Helper';
 
 export default class OneSale extends Component{
@@ -20,8 +20,18 @@ export default class OneSale extends Component{
     }, 'This sale item and its related accounts(debts etc..) will be deleted completely');
   }
 
-  view = () => {
-    this.props.showDialogView(<ViewSale item={this.props.item}/>, "Viewing Stock Item");
+  viewInvoice = () => {
+    this.props.openViewer(
+      "Viewing Invoice",
+      <ViewInvoice item={this.props.item}  business={this.props.business}/>
+    );
+  }
+
+  editSale = () => {
+    this.props.openViewer(
+      "Editing Sale",
+      <EditSale item={this.props.item}  business={this.props.business}/>
+    );
   }
 
   render(){
@@ -46,7 +56,7 @@ export default class OneSale extends Component{
         </div>
 
         <div className="mContainer text-right">
-          <button onClick={() => this.edit()} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="Edit">
+          <button onClick={() => this.editSale()} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="Edit">
             <MdEdit className="mIcon"/>
           </button>
           <button onClick={() => this.delete()} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete">

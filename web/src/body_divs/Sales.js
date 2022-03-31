@@ -79,7 +79,7 @@ export default class Sales extends Component{
             if(index >= startIndex){
               --limit;
               return (
-                <OneSale business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                <OneSale openViewer={this.props.openViewer} business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
               );
             }
           }
@@ -109,7 +109,7 @@ export default class Sales extends Component{
             if(index >= startIndex){
               --limit;
               return (
-                <OneSale business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                <OneSale openViewer={this.props.openViewer} business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
               );
             }
           }

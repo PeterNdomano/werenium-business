@@ -463,3 +463,25 @@ body, html{
 .SaleRow > div{
   padding: 0px;
 }
+
+
+/*-------InvoiceViewer-----------*/
+.InvoiceViewer{
+  min-width: 500px;
+}
+
+.InvoiceViewer tr{
+  height: 20px !important;
+  block-size: 20px !important;
+}
+
+.InvoiceViewer th{
+  font-family: "OpenSansBold";
+  color: var(--accentColor);
+}
+
+@media print {
+  .btn{
+    display: none;
+  }
+}
