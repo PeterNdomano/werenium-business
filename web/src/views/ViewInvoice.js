@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { MDBInput } from 'mdbreact';
 import $ from 'jquery';
 import { showLoader,
@@ -63,15 +63,40 @@ export default class ViewStock extends Component{
                 <button onClick={this.print} className="btn btn-primary text-dark btn-sm"> <MdPrint size={24}/> Print</button>
                 <button onClick={this.export} className="btn btn-warning text-dark btn-sm"> <MdPictureAsPdf size={24}/> Export</button>
               </div>
-              <div className="col-md-6">
-                Company Detailss
+              <div className="col-md-12" style={{ marginTop:"20px", marginBottom:"20px" }}>
+                <h2>
+                {
+                  (this.props.proforma === true)
+                  ?
+                  "Proforma/Estimate"
+                  :
+                  "Invoice"
+                }
+                </h2>
               </div>
               <div className="col-md-6">
-                Customer Details
+                <blockquote>
+                  <h4>{this.props.business.info.name}</h4>
+                  <h6>TIN: <b>{this.props.business.info.TIN}</b></h6>
+                </blockquote>
+              </div>
+              <div className="col-md-6">
+                <blockquote>
+                  {
+                    (this.props.item.data.customerName.trim().length > 0)
+                    ?
+                    <Fragment>
+                      <h5>{this.props.item.data.customerName}</h5>
+                      <h5>{this.props.item.data.customerDetails}</h5>
+                    </Fragment>
+                    :
+                    " "
+                  }
+                </blockquote>
               </div>
               <div className="col-md-12">
-                <MDBTable bordered striped>
-                  <MDBTableHead>
+                <table className="table table-striped">
+                  <thead>
                     <tr>
                       <th>Particular</th>
                       <th>Unit</th>
@@ -79,11 +104,11 @@ export default class ViewStock extends Component{
                       <th>Unit Price</th>
                       <th>Sub Total</th>
                     </tr>
-                  </MDBTableHead>
-                  <MDBTableBody>
+                  </thead>
+                  <tbody>
                     {this.soldItems}
-                  </MDBTableBody>
-                </MDBTable>
+                  </tbody>
+                </table>
               </div>
 
               <div className="col-md-6 text-left"></div>

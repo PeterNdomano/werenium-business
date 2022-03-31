@@ -1,6 +1,6 @@
 import { schema, Type,} from 'lovefield';
 
-const sb = schema.create('wb', 12);
+const sb = schema.create('wb', 13);
 
 //create businessInfo Table
 sb.createTable('businessInfo')
@@ -24,6 +24,7 @@ sb.createTable('sales')
   .addColumn('id', Type.INTEGER)
   .addColumn('arId', Type.INTEGER)
   .addColumn('data', Type.OBJECT)
+  .addColumn('proforma', Type.BOOLEAN)
   .addColumn('date', Type.DATE_TIME)
   .addPrimaryKey(['id'], true);
 

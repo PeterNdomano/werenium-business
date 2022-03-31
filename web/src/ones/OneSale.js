@@ -1,10 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { MdEdit, MdDelete, MdInfo } from 'react-icons/md';
 import ViewInvoice from '../views/ViewInvoice';
 import EditSale from '../views/EditSale';
 import { tellUser, thousandSeps } from '../Helper';
 
 export default class OneSale extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {
+      invoice: (props.invoice === undefined) ? false : props.invoice,
+      proforma: (props.proforma === undefined) ? false : props.proforma,
+    }
+  }
 
   delete = () => {
     this.props.showDialog( async () => {
@@ -24,6 +32,13 @@ export default class OneSale extends Component{
     this.props.openViewer(
       "Viewing Invoice",
       <ViewInvoice item={this.props.item}  business={this.props.business}/>
+    );
+  }
+
+  viewProforma = () => {
+    this.props.openViewer(
+      "Viewing Proforma",
+      <ViewInvoice proforma={true} item={this.props.item}  business={this.props.business}/>
     );
   }
 
@@ -56,16 +71,49 @@ export default class OneSale extends Component{
         </div>
 
         <div className="mContainer text-right">
-          <button onClick={() => this.editSale()} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="Edit">
-            <MdEdit className="mIcon"/>
-          </button>
-          <button onClick={() => this.delete()} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete">
-            <MdDelete className="mIcon"/>
-          </button>
+          {
+            ((this.state.invoice === false && this.state.proforma === false))
+            ?
+            <Fragment>
+              <button onClick={() => this.editSale()} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="Edit">
+                <MdEdit className="mIcon"/>
+              </button>
+              <button onClick={() => this.delete()} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="Delete">
+                <MdDelete className="mIcon"/>
+              </button>
 
-          <button onClick={() => this.viewInvoice()} style={{ width:"100px", background:"var(--accentColor)", color:"var(--darkColor)"}} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="View">
-            view invoice
-          </button>
+              <button onClick={() => this.viewInvoice()} style={{ width:"100px", background:"var(--accentColor)", color:"var(--darkColor)"}} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="View">
+                view invoice
+              </button>
+            </Fragment>
+            :
+            " "
+          }
+
+
+          {
+            (this.state.invoice === true)
+            ?
+            <Fragment>
+              <button onClick={() => this.viewInvoice()} style={{ width:"100px", background:"var(--accentColor)", color:"var(--darkColor)"}} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="View">
+                View Invoice
+              </button>
+            </Fragment>
+            :
+            " "
+          }
+
+          {
+            (this.state.proforma === true)
+            ?
+            <Fragment>
+              <button onClick={() => this.viewProforma()} style={{ width:"100px", background:"var(--accentColor)", color:"var(--darkColor)"}} className="btn btn-sm" data-toggle="tooltip" data-placement="bottom" title="View">
+                view Proforma
+              </button>
+            </Fragment>
+            :
+            " "
+          }
 
         </div>
 

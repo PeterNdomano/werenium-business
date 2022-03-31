@@ -98,6 +98,7 @@ export default class NewSale extends Component{
           let customerName = $('#cName').val();
           let customerDetails = $('#cDetails').val();
           let amountPaid = $('#cAmountPaid').val();
+          let proforma = (this.props.proforma === true) ? true : false;
 
           let data = {
             customerName,
@@ -112,6 +113,7 @@ export default class NewSale extends Component{
               if(!isNaN(date.getTime())){
                 this.setState({ loading: true });
                 await this.props.business.saveSale({
+                  proforma,
                   date,
                   data,
                 }).then((result) => {
@@ -171,6 +173,7 @@ export default class NewSale extends Component{
   render(){
     let date = new Date();
     let today = date.toISOString().substr(0, 10);
+    let btnStr = (this.props.proforma === true) ? "Create Proforma" : "Record Sale";
     return (
       <div className="container">
         <div className="card">
@@ -191,7 +194,7 @@ export default class NewSale extends Component{
             <div className="row">
               <div className="col-md-12" style={{ marginTop:"20px", marginBottom:"10px"}}>
                 <h6 className="text-danger font-regular" style={{ fontSize:"12px" }}>
-                  Fill in items sold to this customer below
+                  Fill in items/services sold to this customer below
                 </h6>
               </div>
             </div>
@@ -227,9 +230,10 @@ export default class NewSale extends Component{
                 <button onClick={() => { this.save() }} className="btn btn-warning text-dark" >
                   {
                     (this.state.loading) ?
-                    getLoader() :
-                    "Record Sale"
+                    getLoader() : ''
+
                   }
+                  {btnStr}
                 </button>
               </div>
             </div>

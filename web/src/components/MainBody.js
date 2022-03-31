@@ -41,24 +41,36 @@ export default class MainBody extends Component{
 
   setTitle = (props) => {
     if(props.showViewer){
-      this.title = props.viewerTitle;
+      this.title = <p>{props.viewerTitle}</p>;
     }
     else{
       switch(props.navTo){
         case "home":
-          this.title = "Home";
+          this.title = <p>Home</p>;
           break;
         case "stock":
-          this.title = "Stock Management";
+          this.title = <p>Stock Management</p>;
           break;
         case "sales":
-          this.title = "Sales";
+          this.title = <p>Sales</p>;
           break;
         case "invoicing":
-          this.title = "Invoicing";
+          this.title = (
+            <ul className="nav nav-pills nav-justified" id="invoicingTab" role="tablist" style={{ width:"100%" }}>
+              <li className="nav-item">
+                <a className="nav-link active" id="invoices-tab" data-toggle="tab" href="#invInvoices" role="tab" aria-controls="home" aria-selected="true">Invoices</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" id="proforma-tab" data-toggle="tab" href="#invProforma" role="tab" aria-controls="profile" aria-selected="false">Proforma</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" id="create-tab" data-toggle="tab" href="#invCreate" role="tab" aria-controls="contact" aria-selected="false">Create</a>
+              </li>
+            </ul>
+          );
           break;
         case "more":
-          this.title = "More Tools";
+          this.title = <p>More Tools</p>;
           break;
         default:
           this.title = "";
@@ -84,7 +96,7 @@ export default class MainBody extends Component{
           this.view = <Sales showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.openViewer} business={props.business}/>;
           break;
         case "invoicing":
-          this.view = <Invoicing/>;
+          this.view = <Invoicing showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.openViewer} business={props.business}/>;
           break;
         case "more":
           this.view = <More/>;
@@ -118,7 +130,7 @@ export default class MainBody extends Component{
               </div>
               : " "
             }
-            <p>{this.title}</p>
+            {this.title}
           </div>
         </div>
 

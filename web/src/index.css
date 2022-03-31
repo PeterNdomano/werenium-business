@@ -246,7 +246,7 @@ body, html{
   padding: 0px;
   background: var(--lightColor);
   position: fixed;
-  height: 40px;
+  height: 50px;
   z-index: 700;
   top: var(--topBarHeight);
   left: 0;
@@ -254,12 +254,17 @@ body, html{
   overflow: hidden;
 }
 
+.MainBody .mTitle .nav-item{
+  margin-top: 5px;
+  font-family: "OpenSansBold";
+}
+
 .MainBody > .mTitle > .container{
   height: 100%;
 }
 
 .MainBody > .mTitle > .container > p{
-  line-height: 40px;
+  line-height: 50px;
   font-family: "OpenSansRegular";
 }
 
@@ -387,6 +392,38 @@ body, html{
   height: 20px;
 }
 
+/*-----------------Invoicing--------------*/
+.Invoicing{
+  color: var(--darkColor);
+}
+
+.Invoicing .introCard{
+  height: 150px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.Invoicing .introCard .d-flex{
+  height: 100%;
+}
+
+.Invoicing .introCard h1{
+  font-size: 45px;
+  font-family: "OpenSansRegular";
+  color: var(--lightColor);
+}
+
+.Invoicing .introCard h6{
+  font-size: 15px;
+  font-family: "OpenSansRegular";
+}
+
+.Invoicing .introCard .mIcon{
+  width: 80px;
+  height: 80px;
+  color: var(--lightColor);
+}
+
 
 
 /*-----------------Sales--------------*/
@@ -471,8 +508,9 @@ body, html{
 }
 
 .InvoiceViewer tr{
-  height: 20px !important;
-  block-size: 20px !important;
+  line-height: 20px;
+  max-height: 20px;
+  height: 20px;
 }
 
 .InvoiceViewer th{

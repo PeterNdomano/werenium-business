@@ -7,7 +7,7 @@ import NewSale from '../views/NewSale';
 import OneSale from '../ones/OneSale';
 import $ from 'jquery';
 
-export default class Sales extends Component{
+export default class AllInvoices extends Component{
 
   constructor(props){
     super(props);
@@ -82,13 +82,12 @@ export default class Sales extends Component{
               --limit;
               if(item.proforma === false){
                 return (
-                  <OneSale openViewer={this.props.openViewer} business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                  <OneSale invoice={true} openViewer={this.props.openViewer} business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
                 );
               }
               else{
                 return '';
               }
-
             }
           }
           else{
@@ -118,13 +117,12 @@ export default class Sales extends Component{
               --limit;
               if(item.proforma === false){
                 return (
-                  <OneSale openViewer={this.props.openViewer} business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                  <OneSale invoice={true} openViewer={this.props.openViewer} business={this.props.business} getSales={this.getSales} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
                 );
               }
               else{
                 return '';
               }
-
             }
           }
           else{
@@ -140,7 +138,7 @@ export default class Sales extends Component{
       }
       else{
         this.pagination = '';
-        this.salesShow = <div className="text-center">No sales were found</div>
+        this.salesShow = <div className="text-center">No Invoices were found</div>
         this.setState((prevState) => ({
           gotSales: !(prevState.gotSales),
         }));
@@ -214,64 +212,19 @@ export default class Sales extends Component{
     )
   }
 
-  newSale = () => {
-    this.props.openViewer(
-      "Record New Sale",
-      <NewSale showDialog={this.props.showDialog}  business={this.props.business}/>
-    );
-  }
-
 
   render(){
     return (
-      <div className="container Sales">
-        <div className="row">
-          <div className="col-sm-12 col-md-12">
-            <div className="row">
+      <div className="container">
+        <div style={{ width:"100%"}}>
+          <MDBInput value={this.state.filterString} onChange={(e) => {this.handleFilter(e)}} style={{ }} label="Filter sales by customer name" size="sm" icon="search" />
+        </div>
+        <div style={{ width:"100%"}}>
+          {this.salesShow}
+        </div>
 
-              <div className="col-md-6 col-sm-12">
-                <div className="card introCard bg-warning">
-                  <div className="d-flex">
-                    <div className="p-1 align-self-center">
-                      <AiOutlineStock className="mIcon"/>
-                    </div>
-                    <div className="align-self-center flex-grow-1 text-right p-2">
-                      <h1>{numberFormat(this.salesValue)}</h1>
-                      <h6>Total Sales Value in {this.props.business.info['currency']}</h6>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-md-6 col-sm-12">
-                <div className="card introCard" style={{ cursor:"pointer" }}>
-                  <button onClick={() => this.newSale()} style={{ width:"100%", height:"100%", margin:"0px"}} className="btn btn-success">
-                    <AiOutlineAppstoreAdd className="mIcon"/><br/>
-                    <h6>Record New Sale</h6>
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <div className="col-sm-12 col-md-12">
-            <div className="card">
-              <div className="card-body">
-                <h3 className="card-title">Sales List</h3>
-                <div style={{ width:"100%"}}>
-                  <MDBInput value={this.state.filterString} onChange={(e) => {this.handleFilter(e)}} style={{ }} label="Filter sales by customer name" size="sm" icon="search" />
-                </div>
-                <div style={{ width:"100%"}}>
-                  {this.salesShow}
-                </div>
-
-                <div style={{ width:"100%"}} className="text-center">
-                  {this.pagination}
-                </div>
-              </div>
-            </div>
-          </div>
+        <div style={{ width:"100%"}} className="text-center">
+          {this.pagination}
         </div>
       </div>
     );
