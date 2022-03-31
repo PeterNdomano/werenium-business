@@ -345,6 +345,50 @@ body, html{
   height: 20px;
 }
 
+/*----------------OneSale ------------*/
+.OneSale{
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.OneSale > .mContainer{
+  width: 100%;
+}
+
+.OneSale > .mContainer > .mTitle{
+  font-size: 16px;
+
+  font-family: "OpenSansBold";
+}
+
+.OneSale > .mContainer > .mAmount{
+  font-size: 28px;
+  color: var(--accentColor);
+  font-family: "OpenSansRegular";
+}
+
+.OneSale > .mContainer > button{
+  width: 40px;
+  padding: 5px;
+  box-shadow: none;
+  color: var(--accentColor);
+}
+
+.OneSale > .mContainer > button:hover{
+  width: 40px;
+  padding: 5px;
+  color: var(--primaryColor);
+}
+
+
+.OneSale > .mContainer > button > .mIcon{
+  width: 20px;
+  height: 20px;
+}
+
+
+
 /*-----------------Sales--------------*/
 .Sales{
   color: var(--darkColor);

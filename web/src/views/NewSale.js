@@ -117,6 +117,7 @@ export default class NewSale extends Component{
                 }).then((result) => {
                   if(result === true){
                     this.setState({ loading: false });
+                    $('#viewerCloserBtn').click();
                     tellUser('Saving successful...');
                   }
                   else{

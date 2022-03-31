@@ -112,7 +112,7 @@ export default class MainBody extends Component{
           <div className="container d-flex">
             {
               (this.props.showViewer) ?
-              <div style={{ cursor:"pointer" }} onClick={() => this.closeViewer()} className="align-self-center">
+              <div id="viewerCloserBtn" style={{ cursor:"pointer" }} onClick={() => this.closeViewer()} className="align-self-center">
                 <MdOutlineArrowBack size={30}/>
                 &nbsp;&nbsp;&nbsp;
               </div>

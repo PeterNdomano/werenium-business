@@ -32,7 +32,7 @@ export default class OneStock extends Component{
       <div className="OneStock">
         <div className="mContainer text-left">
           <h6 className="mAmount">
-            {this.props.item.id}
+            {this.props.item.quantity}
             <span style={{ fontSize:"14px" }}>
               &nbsp;&nbsp;
               {this.props.item.unit}

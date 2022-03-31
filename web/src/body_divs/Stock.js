@@ -23,7 +23,7 @@ export default class Stock extends Component{
     this.stock = [];
     this.stockFiltered = [];
     this.maxItems = 50;
-    this.stockValue = 0
+    this.stockValue = 0;
 
   }
 
@@ -63,7 +63,7 @@ export default class Stock extends Component{
       this.stockShow = getLoader();
       this.stockFiltered = [];
       this.stock.forEach((item, index) => {
-        if(item.title.indexOf(filterStr) > -1){
+        if(String(item.title).toLowerCase() > -1){
           this.stockFiltered.push(item);
         }
       });
@@ -255,6 +255,8 @@ export default class Stock extends Component{
           <div className="col-sm-12 col-md-12">
             <div className="card">
               <div className="card-body">
+
+                <h3 className="card-title">Stock List</h3>
                 <div style={{ width:"100%"}}>
                   <MDBInput value={this.state.filterString} onChange={(e) => {this.handleFilter(e)}} style={{ }} label="Filter stock list by title" size="sm" icon="search" />
                 </div>

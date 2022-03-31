@@ -84,18 +84,20 @@ class Business{
     sale.arId = insertAr[0].id;
 
     //save customer data if available // TODO: Keeping track of customers
-    // if(sale.data.customerName.trim().length > 0 && sale.data.customerDetails.trim().length > 0){
-    //   let customer = {
-    //     name: sale.data.customerName,
-    //     details: sale.data.customerDetails,
-    //     date: new Date(),
-    //   }
-    //   await this.saveCustomer(customer);
-    // }
+    if(sale.data.customerName.trim().length > 0 && sale.data.customerDetails.trim().length > 0){
+      let customer = {
+        name: sale.data.customerName,
+        details: sale.data.customerDetails,
+        date: new Date(),
+      }
+      await this.saveCustomer(customer);
+    }
+
 
     //then insert sale and update accountReceivable table
     let sales = this.db.getSchema().table('sales');
     let row = sales.createRow(sale);
+
     let arTable = this.db.getSchema().table('receivableAccounts');
     return (
       await this.db.insertOrReplace().into(sales).values([row]).exec().then((row) => {
@@ -137,10 +139,56 @@ class Business{
 
   }
 
+  deleteStockHistory = async (id) => {
+    let table = this.db.getSchema().table('stockHistory');
+    return (
+      await this.db.delete().from(table).where(table.id.eq(id)).exec().then(() => {
+        return true;
+      })
+    );
+  }
+
+  deleteReceivableAccounts = async (id) => {
+    let table = this.db.getSchema().table('receivableAccounts');
+    return (
+      await this.db.delete().from(table).where(table.id.eq(id)).exec().then(() => {
+        return true;
+      })
+    );
+  }
+
+  deleteSale = async (sale) => {
+    //delete stockHistory
+    sale.data.soldItems.forEach(async (item) => {
+      await this.deleteStockHistory(item.stockHistId);
+    })
+
+    //delete receivableAcc accs
+    await this.deleteReceivableAccounts(sale.arId);
+
+    //delete sale itself
+    let sales = this.db.getSchema().table('sales');
+    return (
+      await this.db.delete().from(sales).where(sales.id.eq(sale.id)).exec().then(() => {
+        return true;
+      })
+    );
+
+  }
+
   getStock = async () => {
     let stock = this.db.getSchema().table('stock');
     return (
       await this.db.select().from(stock).orderBy(stock.id, Order.DESC).exec().then((rows) => {
+        return rows;
+      })
+    )
+  }
+
+  getSales = async () => {
+    let sales = this.db.getSchema().table('sales');
+    return (
+      await this.db.select().from(sales).orderBy(sales.id, Order.DESC).exec().then((rows) => {
         return rows;
       })
     )

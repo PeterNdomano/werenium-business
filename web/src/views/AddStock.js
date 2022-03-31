@@ -46,6 +46,7 @@ export default class AddStock extends Component{
                 }).then((result) => {
                   this.setState({ loading: false });
                   if(result === true){
+                    $('#viewerCloserBtn').click();
                     tellUser('Saving successful..');
                   }
                   else{
