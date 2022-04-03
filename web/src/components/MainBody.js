@@ -70,7 +70,16 @@ export default class MainBody extends Component{
           );
           break;
         case "more":
-          this.title = <p>More Tools</p>;
+        this.title = (
+            <ul className="nav nav-pills nav-justified" id="accountingTab" role="tablist" style={{ width:"100%" }}>
+              <li className="nav-item">
+                <a className="nav-link active" id="accounting-tab" data-toggle="tab" href="#moreAccounting" role="tab" aria-controls="home" aria-selected="true">Accounting</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" id="mangement-tab" data-toggle="tab" href="#moreManagement" role="tab" aria-controls="contact" aria-selected="false">Management</a>
+              </li>
+            </ul>
+          );
           break;
         default:
           this.title = "";
@@ -99,7 +108,7 @@ export default class MainBody extends Component{
           this.view = <Invoicing showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.openViewer} business={props.business}/>;
           break;
         case "more":
-          this.view = <More/>;
+          this.view = <More showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.openViewer} business={props.business}/>;
           break;
         default:
           this.view = <div></div>;
