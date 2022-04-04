@@ -6,6 +6,8 @@ import { numberFormat, getLoader, tellUser, getStartIndex } from '../Helper';
 import NewSale from '../views/NewSale';
 import OneSale from '../ones/OneSale';
 import $ from 'jquery';
+import AddIncome from '../views/AddIncome';
+import AllIncomes from '../views/AllIncomes';
 
 export default class MainIncome extends Component{
 
@@ -18,7 +20,7 @@ export default class MainIncome extends Component{
   }
 
   newIncome = () => {
-    //..
+    this.props.showDialogView(<AddIncome business={this.props.business}/>, "Record Income");
   }
 
   render(){
@@ -57,7 +59,7 @@ export default class MainIncome extends Component{
           <div className="col-sm-12 col-md-12">
             <div className="card">
               <div className="card-body">
-                here comes list of income
+                <AllIncomes showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.props.openViewer} business={this.props.business}/>
               </div>
             </div>
           </div>

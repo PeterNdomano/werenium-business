@@ -81,6 +81,15 @@ body, html{
 .mEditable:focus{
   outline: none;
 }
+
+input:focus, textarea:focus{
+  box-shadow: none !important;
+  border: 1px solid blue;
+}
+
+label{
+  font-size: 14px;
+}
 /*----------- 2. COMPONENTS STYLING ------------*/
 
 

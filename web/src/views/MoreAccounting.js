@@ -7,7 +7,7 @@ export default class MoreAccounting extends Component {
   openIncome = () => {
     this.props.openViewer(
       "Income Management",
-      <MainIncome showDialog={this.props.showDialog}  business={this.props.business}/>
+      <MainIncome showDialogView={this.props.showDialogView} showDialog={this.props.showDialog}  business={this.props.business}/>
     );
   }
   render(){

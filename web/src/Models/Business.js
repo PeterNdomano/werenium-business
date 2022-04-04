@@ -39,6 +39,20 @@ class Business{
     )
   }
 
+  getIncomes = async () => {
+    //get from accounts receivable
+
+    //get those stored in ncome database table
+
+    //just a sample
+    let table = this.db.getSchema().table('incomes');
+    return (
+      await this.db.select().from(table).orderBy(table.id, Order.DESC).exec().then((rows) => {
+        return rows;
+      })
+    )
+  }
+
   saveSale = async (sale) => {
     //process stockHistory
     let stockList = await this.getStock();
@@ -199,6 +213,16 @@ class Business{
     let row = stock.createRow(item);
     return (
       await this.db.insertOrReplace().into(stock).values([row]).exec().then((rows) => {
+        return true;
+      })
+    )
+  }
+
+  saveIncome = async (item) => {
+    let table = this.db.getSchema().table('incomes');
+    let row = table.createRow(item);
+    return (
+      await this.db.insertOrReplace().into(table).values([row]).exec().then((rows) => {
         return true;
       })
     )

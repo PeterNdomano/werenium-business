@@ -1,6 +1,6 @@
 import { schema, Type,} from 'lovefield';
 
-const sb = schema.create('wb', 13);
+const sb = schema.create('wb', 14);
 
 //create businessInfo Table
 sb.createTable('businessInfo')
@@ -52,6 +52,20 @@ sb.createTable('customers')
   .addColumn('id', Type.INTEGER)
   .addColumn('name', Type.STRING)
   .addColumn('details', Type.STRING)
+  .addColumn('date', Type.DATE_TIME)
+  .addPrimaryKey(['id'], true);
+
+sb.createTable('incomes')
+  .addColumn('id', Type.INTEGER)
+  .addColumn('description', Type.STRING)
+  .addColumn('amount', Type.INTEGER)
+  .addColumn('date', Type.DATE_TIME)
+  .addPrimaryKey(['id'], true);
+
+sb.createTable('expenses')
+  .addColumn('id', Type.INTEGER)
+  .addColumn('description', Type.STRING)
+  .addColumn('amount', Type.INTEGER)
   .addColumn('date', Type.DATE_TIME)
   .addPrimaryKey(['id'], true);
 

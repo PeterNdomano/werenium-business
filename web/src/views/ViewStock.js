@@ -48,7 +48,7 @@ export default class ViewStock extends Component{
             <p>No of Sales vs time graph</p>
           </div>
           <div className="col-md-12 text-right">
-            <button onClick={() => { $('#dialogCloser2').click() }} className="btn btn-warning text-dark">Close</button>
+            <button onClick={() => { $('#dialogCloser2').click() }} className="btn btn-warning text-dark btn-sm">Close</button>
           </div>
         </div>
       </div>
