@@ -53,7 +53,7 @@ export default class Stock extends Component{
   setStockValue = () => {
     let value = 0;
     this.stock.forEach((item)=> {
-      value += (item.quantity * item.bPrice);
+      value += Number(Number(item.quantity) * Number(item.bPrice));
     });
     this.stockValue = value;
   }

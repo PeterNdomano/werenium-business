@@ -35,6 +35,15 @@ export default class AllIncomes extends Component{
     )();
   }
 
+  UNSAFE_componentWillReceiveProps(props){
+    (
+      async () => {
+        await this.getIncomes();
+        this.setIncomesShow();
+      }
+    )();
+  }
+
   handleFilter = (e) => {
     let str = e.target.value;
     this.setIncomesShow(str);
@@ -54,9 +63,12 @@ export default class AllIncomes extends Component{
   setIncomesValue = () => {
     let value = 0;
     this.incomes.forEach((item)=> {
-      value += (item.total);
+      value += Number(item.amountPaid);
     });
     this.incomesValue = value;
+    if(this.props.showTotal === true){
+      document.getElementById('_totalIncomeDisplay').innerHTML = numberFormat(this.incomesValue);
+    }
   }
 
   setIncomesShow = (filterStr = '', bIndex = 0) => {
@@ -79,7 +91,7 @@ export default class AllIncomes extends Component{
             if(index >= startIndex){
               --limit;
               return (
-                <OneIncome  openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                <OneIncome reload={this.props.reload} openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
               );
             }
           }
@@ -109,7 +121,7 @@ export default class AllIncomes extends Component{
             if(index >= startIndex){
               --limit;
               return (
-                <OneIncome  openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                <OneIncome reload={this.props.reload}  openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
               );
             }
           }

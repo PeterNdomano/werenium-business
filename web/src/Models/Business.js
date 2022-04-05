@@ -39,17 +39,18 @@ class Business{
     )
   }
 
-  getIncomes = async () => {
-    //get from accounts receivable
-
-    //get those stored in ncome database table
-
-    //just a sample
-    let table = this.db.getSchema().table('incomes');
+  getAccountsReceivable = async () => {
+    let table = this.db.getSchema().table('receivableAccounts');
     return (
       await this.db.select().from(table).orderBy(table.id, Order.DESC).exec().then((rows) => {
         return rows;
       })
+    )
+  }
+
+  getIncomes = async () => {
+    return (
+      await this.getAccountsReceivable()
     )
   }
 
@@ -219,6 +220,7 @@ class Business{
   }
 
   saveIncome = async (item) => {
+    /*
     let table = this.db.getSchema().table('incomes');
     let row = table.createRow(item);
     return (
@@ -226,6 +228,19 @@ class Business{
         return true;
       })
     )
+    */
+    await this.saveAccountReceivable({
+      refId: 0,
+      ref: item.description,
+      amountDue: item.amount,
+      amountPaid: item.amount,
+      paymentHistory: [{
+        date: item.date,
+        amount: item.amount,
+      }],
+      date: item.date,
+    });
+    return true;
   }
 
   static initialize = async (db) => {

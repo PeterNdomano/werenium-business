@@ -55,7 +55,7 @@ export default class AllInvoices extends Component{
     let value = 0;
     this.sales.forEach((item)=> {
       if(item.proforma === false){
-        value += (item.data.total);
+        value += Number(item.data.total);
       }
     });
     this.salesValue = value;

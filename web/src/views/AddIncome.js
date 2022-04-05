@@ -41,7 +41,7 @@ export default class AddIncome extends Component{
               tellUser('Saved successfully...');
               this.setState({
                 loading: false,
-              });
+              }, () => this.props.reload());
               $('#dialogCloser2').click()
             }
             else{

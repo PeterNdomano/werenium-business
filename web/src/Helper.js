@@ -67,6 +67,14 @@ export function thousandSeps(num){
   return num;
 }
 
+export function padNumber(num){
+  return num;
+}
+
+export function unpadNumber(num){
+  return Number(num);
+}
+
 export function numberFormat(num, digits = 3){
   num = Number.parseFloat(num);
   const lookup = [

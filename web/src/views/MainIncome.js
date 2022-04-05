@@ -13,14 +13,25 @@ export default class MainIncome extends Component{
 
   constructor(props){
     super(props);
+    this.state = {
+      reload: false,
+    }
   }
 
   componentDidMount(){
 
   }
 
+  reload = () => {
+    this.setState((prevState) => {
+      return {
+        reload: !prevState.reload,
+      }
+    })
+  }
+
   newIncome = () => {
-    this.props.showDialogView(<AddIncome business={this.props.business}/>, "Record Income");
+    this.props.showDialogView(<AddIncome reload={this.reload} business={this.props.business}/>, "Record Income");
   }
 
   render(){
@@ -37,7 +48,7 @@ export default class MainIncome extends Component{
                       <AiOutlineStock className="mIcon"/>
                     </div>
                     <div className="align-self-center flex-grow-1 text-right p-2">
-                      <h1>{numberFormat(100000)}</h1>
+                      <h1 id="_totalIncomeDisplay">0</h1>
                       <h6>Total Income in {this.props.business.info['currency']}</h6>
                     </div>
                   </div>
@@ -59,7 +70,7 @@ export default class MainIncome extends Component{
           <div className="col-sm-12 col-md-12">
             <div className="card">
               <div className="card-body">
-                <AllIncomes showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.props.openViewer} business={this.props.business}/>
+                <AllIncomes reload={this.reload} showTotal={true} showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.props.openViewer} business={this.props.business}/>
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { MdEdit, MdDelete, MdInfo } from 'react-icons/md';
 import ViewInvoice from '../views/ViewInvoice';
 import EditSale from '../views/EditSale';
-import { tellUser, thousandSeps } from '../Helper';
+import { tellUser, thousandSeps, padNumber } from '../Helper';
 
 export default class OneSale extends Component{
 
@@ -25,7 +25,7 @@ export default class OneSale extends Component{
           tellUser('Deleting failed..');
         }
       })
-    }, 'This sale item and its related accounts(debts etc..) will be deleted completely');
+    }, 'This sale item and its related accounts(debts, income etc..) will be deleted completely');
   }
 
   viewInvoice = () => {
@@ -66,7 +66,7 @@ export default class OneSale extends Component{
           <h6 style={{ fontSize: "12px"}}>
             {"Date: "+this.props.item.date.getFullYear()+" / "+this.props.item.date.getMonth()+" / "+this.props.item.date.getDate()}
             ,&nbsp;&nbsp;
-            {"ID: "+ this.props.item.id+"-"+this.props.item.date.getTime()}
+            {"ID: "+ padNumber(this.props.item.id)}
           </h6>
         </div>
 
