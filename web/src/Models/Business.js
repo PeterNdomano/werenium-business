@@ -39,8 +39,27 @@ class Business{
     )
   }
 
+  saveAccountPayable =  async (ar) => {
+    let payables = this.db.getSchema().table('payableAccounts');
+    let row = payables.createRow(ar);
+    return (
+      await this.db.insertOrReplace().into(payables).values([row]).exec().then((row) => {
+        return row;
+      })
+    )
+  }
+
   getAccountsReceivable = async () => {
     let table = this.db.getSchema().table('receivableAccounts');
+    return (
+      await this.db.select().from(table).orderBy(table.id, Order.DESC).exec().then((rows) => {
+        return rows;
+      })
+    )
+  }
+
+  getAccountsPayable = async () => {
+    let table = this.db.getSchema().table('payableAccounts');
     return (
       await this.db.select().from(table).orderBy(table.id, Order.DESC).exec().then((rows) => {
         return rows;
@@ -51,6 +70,12 @@ class Business{
   getIncomes = async () => {
     return (
       await this.getAccountsReceivable()
+    )
+  }
+
+  getExpenses = async () => {
+    return (
+      await this.getAccountsPayable()
     )
   }
 
@@ -172,6 +197,15 @@ class Business{
     );
   }
 
+  deletePayableAccounts = async (id) => {
+    let table = this.db.getSchema().table('payableAccounts');
+    return (
+      await this.db.delete().from(table).where(table.id.eq(id)).exec().then(() => {
+        return true;
+      })
+    );
+  }
+
   deleteSale = async (sale) => {
     //delete stockHistory
     sale.data.soldItems.forEach(async (item) => {
@@ -230,6 +264,30 @@ class Business{
     )
     */
     await this.saveAccountReceivable({
+      refId: 0,
+      ref: item.description,
+      amountDue: item.amount,
+      amountPaid: item.amount,
+      paymentHistory: [{
+        date: item.date,
+        amount: item.amount,
+      }],
+      date: item.date,
+    });
+    return true;
+  }
+
+  saveExpense = async (item) => {
+    /*
+    let table = this.db.getSchema().table('incomes');
+    let row = table.createRow(item);
+    return (
+      await this.db.insertOrReplace().into(table).values([row]).exec().then((rows) => {
+        return true;
+      })
+    )
+    */
+    await this.saveAccountPayable({
       refId: 0,
       ref: item.description,
       amountDue: item.amount,

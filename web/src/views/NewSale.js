@@ -159,7 +159,7 @@ export default class NewSale extends Component{
     })
     this.setState((prevState) => ({
       rowsChanged: !prevState.rowsChanged,
-    }))
+    }), () => { this.sumUp() })
   }
 
   addRow = () => {

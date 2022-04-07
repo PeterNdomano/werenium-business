@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { MdPerson, MdNavigateNext } from 'react-icons/md';
 import MainIncome from '../views/MainIncome';
+import MainExpenses from '../views/MainExpenses';
+
 
 
 export default class MoreAccounting extends Component {
@@ -8,6 +10,13 @@ export default class MoreAccounting extends Component {
     this.props.openViewer(
       "Income Management",
       <MainIncome showDialogView={this.props.showDialogView} showDialog={this.props.showDialog}  business={this.props.business}/>
+    );
+  }
+
+  openExpenses = () => {
+    this.props.openViewer(
+      "Expenses Management",
+      <MainExpenses showDialogView={this.props.showDialogView} showDialog={this.props.showDialog}  business={this.props.business}/>
     );
   }
   render(){
@@ -30,7 +39,7 @@ export default class MoreAccounting extends Component {
             <hr/>
           </div>
 
-          <div className="mTab">
+          <div className="mTab" onClick={() => this.openExpenses()} >
             <div className="d-flex flex-row">
               <div className="align-self-center p-2">
                 <MdPerson size={24} className=""/>
