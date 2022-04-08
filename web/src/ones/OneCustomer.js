@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { MdEdit, MdDelete, MdInfo } from 'react-icons/md';
-import ViewExpense from '../views/ViewExpense';
+import ViewCustomer from '../views/ViewCustomer';
 import EditSale from '../views/EditSale';
 import { tellUser, thousandSeps } from '../Helper';
 
@@ -14,31 +14,25 @@ export default class OneIncome extends Component{
   }
 
   delete = () => {
-    if(this.props.item.refId === 0){
-      this.props.showDialog( async () => {
-        await this.props.business.deletePayableAccounts(this.props.item.id).then((result) => {
-          if(result === true){
-            tellUser('Item was deleted');
-            this.props.reload();
-          }
-          else{
-            tellUser('Deleting failed..');
-          }
-        })
-      }, 'This item and its related accounts(debts, expenses etc..) will be deleted completely');
-    }
-    else{
-      tellUser('Income is linked to '+this.props.item.ref);
-      tellUser('Delete it from '+this.props.item.ref+' menu');
-    }
+    this.props.showDialog( async () => {
+      await this.props.business.deleteCustomer(this.props.item.id).then((result) => {
+        if(result === true){
+          tellUser('Customer was deleted');
+          this.props.reload();
+        }
+        else{
+          tellUser('Deleting failed..');
+        }
+      })
+    }, 'This customer will be deleted completely');
   }
 
 
 
   view = () => {
     this.props.showDialogView(
-      <ViewExpense item={this.props.item}  business={this.props.business}/>,
-      "Viewing Expense"
+      <ViewCustomer item={this.props.item}  business={this.props.business}/>,
+      "Viewing Customer"
     );
   }
 
@@ -47,17 +41,14 @@ export default class OneIncome extends Component{
       <div className="OneSale">
         <div className="mContainer text-left">
           <h6 className="mAmount">
-            {thousandSeps(this.props.item.amountPaid)}
-            <span style={{ fontSize:"14px" }}>
-              &nbsp;&nbsp;
-              {this.props.business.info.currency}
-            </span>
+            {this.props.item.name}
+
           </h6>
           <h6 className="mTitle">
           {this.props.item.ref}
           </h6>
           <h6 style={{ fontSize: "12px"}}>
-            {"Date: "+this.props.item.date.getFullYear()+" / "+this.props.item.date.getMonth()+" / "+this.props.item.date.getDate()}
+            {"Registered: "+this.props.item.date.getFullYear()+" / "+this.props.item.date.getMonth()+" / "+this.props.item.date.getDate()}
           </h6>
         </div>
 

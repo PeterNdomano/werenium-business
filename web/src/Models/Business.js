@@ -231,6 +231,15 @@ class Business{
     );
   }
 
+  deleteCustomer = async (id) => {
+    let table = this.db.getSchema().table('customers');
+    return (
+      await this.db.delete().from(table).where(table.id.eq(id)).exec().then(() => {
+        return true;
+      })
+    );
+  }
+
   deletePayableAccounts = async (id) => {
     let table = this.db.getSchema().table('payableAccounts');
     return (
