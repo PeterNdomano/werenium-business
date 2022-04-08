@@ -67,10 +67,40 @@ export default class MoreManagement extends Component {
             </div>
             <hr/>
           </div>
+
+          <div className="mTab">
+            <div className="d-flex flex-row">
+              <div className="align-self-center p-2">
+                <MdPerson size={24} className=""/>
+              </div>
+              <div className="align-self-center p-2 flex-grow-1">
+                <span>Back Up & Restore</span>
+              </div>
+              <div className="align-self-center p-2">
+                <MdNavigateNext size={24} className=""/>
+              </div>
+            </div>
+            <hr/>
+          </div>
         </div>
 
 
         <div className="col-md-6">
+          <div className="mTab">
+            <div className="d-flex flex-row">
+              <div className="align-self-center p-2">
+                <MdPerson size={24} className=""/>
+              </div>
+              <div className="align-self-center p-2 flex-grow-1">
+                <span>System Users</span>
+              </div>
+              <div className="align-self-center p-2">
+                <MdNavigateNext size={24} className=""/>
+              </div>
+            </div>
+            <hr/>
+          </div>
+
           <div className="mTab">
             <div className="d-flex flex-row">
               <div className="align-self-center p-2">
