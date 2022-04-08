@@ -24,7 +24,7 @@ class Business{
     let row = customers.createRow(customer);
     return (
       await this.db.insertOrReplace().into(customers).values([row]).exec().then((row) => {
-        return row;
+        return true;
       })
     )
   }

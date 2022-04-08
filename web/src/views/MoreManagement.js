@@ -7,7 +7,7 @@ export default class MoreManagement extends Component {
   openCustomers = () => {
     this.props.openViewer(
       "Customers Management",
-      <MainCustomers showDialog={this.props.showDialog}  business={this.props.business}/>
+      <MainCustomers showDialogView={this.props.showDialogView} showDialog={this.props.showDialog}  business={this.props.business}/>
     );
   }
   render(){
