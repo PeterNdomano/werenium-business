@@ -69,7 +69,7 @@ export default class SaleRow extends Component{
   }
 
   handleQuantity = (quantity) => {
-    if(quantity.trim().length > 0 && !isNaN(quantity)){
+    if(quantity.trim().length > 0 && !isNaN(quantity) && Number(quantity) > 0){
       let subTotal = quantity * this.state.unitPrice;
 
       this.setState({
@@ -79,7 +79,7 @@ export default class SaleRow extends Component{
       })
     }
     else{
-      tellUser('Quantity should be a number');
+      tellUser('Quantity should be a positive number');
       this.setState({
         subTotal: '',
         quantity: '',
@@ -91,7 +91,7 @@ export default class SaleRow extends Component{
   }
 
   handleUnitPrice = (unitPrice) => {
-    if(unitPrice.trim().length > 0 && !isNaN(unitPrice)){
+    if(unitPrice.trim().length > 0 && !isNaN(unitPrice) && Number(unitPrice) > 0){
       let subTotal = unitPrice * this.state.quantity;
 
       this.setState({
@@ -101,7 +101,7 @@ export default class SaleRow extends Component{
       })
     }
     else{
-      tellUser('Quantity should be a number')
+      tellUser('Unit Price should be a positive number')
       this.setState({
         subTotal: '',
         unitPrice: '',

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { MdPerson, MdNavigateNext } from 'react-icons/md';
-import MainIncome from '../views/MainIncome';
+import MainCustomers from '../views/MainCustomers';
 
 
 export default class MoreManagement extends Component {
   openCustomers = () => {
     this.props.openViewer(
-      "Income Management",
-      <MainIncome showDialog={this.props.showDialog}  business={this.props.business}/>
+      "Customers Management",
+      <MainCustomers showDialog={this.props.showDialog}  business={this.props.business}/>
     );
   }
   render(){

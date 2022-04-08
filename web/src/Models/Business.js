@@ -67,6 +67,15 @@ class Business{
     )
   }
 
+  getCustomers = async () => {
+    let table = this.db.getSchema().table('customers');
+    return (
+      await this.db.select().from(table).orderBy(table.id, Order.DESC).exec().then((rows) => {
+        return rows;
+      })
+    )
+  }
+
   getIncomes = async () => {
     return (
       await this.getAccountsReceivable()
@@ -130,7 +139,32 @@ class Business{
         details: sale.data.customerDetails,
         date: new Date(),
       }
-      await this.saveCustomer(customer);
+
+      let customers = await this.getCustomers();
+      let ready = false;
+      customers.forEach(async (item, index) => {
+        if(item.name === customer.name){
+          console.log(String(item.details).toLowerCase() === String(customer.details).toLowerCase());
+          if(String(item.details).toLowerCase() === String(customer.details).toLowerCase()){
+            //double punch
+            //console.log(1);
+            ready = true;
+            return;
+          }
+          else{
+            await this.saveCustomer(customer);
+            return;
+          }
+        }
+        else{
+          if(index === (customers.length - 1) && ready === false){
+            //console.log(2);
+            await this.saveCustomer(customer);
+            return;
+          }
+        }
+      })
+
     }
 
 

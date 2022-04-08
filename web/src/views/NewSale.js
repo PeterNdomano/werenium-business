@@ -19,19 +19,38 @@ export default class NewSale extends Component{
     this.state = {
       loading: false,
       rowsChanged: false,
+      gotCustomers: false,
+      customerName: '',
+      customerDetails: '',
     }
 
-
+    this.customers = [];
+    this.customersList = '';
     this.rowsData = [];
     this.total = 0;
     this.rows = [<SaleRow business={this.props.business} sumUp={this.sumUp} index={0} key={"_row"+0+"_"+Math.random()} deleteRow={this.deleteRow}/>];
   }
 
   componentDidMount(){
-
+    (
+      async () => {
+        this.customers = await this.getCustomers();
+        this.customersList = this.customers.map((item, index) => {
+          return (
+            <option onClick={() => { console.log(item.name); }} value={item.name} key={item.id}>{item.name}</option>
+          )
+        });
+        this.setState({
+          gotCustomers: true,
+        })
+      }
+    )();
   }
 
-
+  getCustomers = async () => {
+    this.customers = await this.props.business.getCustomers();
+    return this.customers;
+  }
 
   sumUp = () => {
     this.rowsData = [];
@@ -91,6 +110,7 @@ export default class NewSale extends Component{
   }
 
   save = () => {
+    this.sumUp();
     if(!this.state.loading){
       if(this.checkValidity() === true){
         this.props.showDialog( async () => {
@@ -151,6 +171,41 @@ export default class NewSale extends Component{
 
   }
 
+  handleName = (particular) => {
+    this.setCustomerSuggestions(particular);
+    this.setState({
+      customerName: particular,
+    },  () => {
+      //..
+    })
+  }
+
+  handleDetails = (particular) => {
+    this.setState({
+      customerDetails: particular,
+    },  () => {
+      //..
+    })
+  }
+
+  setCustomerSuggestions = (particular) => {
+    let selectedItem = null;
+    this.customers.forEach((item, i) => {
+      if(item.name === particular){
+        selectedItem = item;
+        return;
+      }
+    });
+
+
+    if(selectedItem !== null){
+      this.setState({
+        customerName: selectedItem.name,
+        customerDetails: selectedItem.details,
+      })
+    }
+  }
+
   deleteRow = (index) => {
     this.rows.forEach((item, i) => {
       if(item.props.index === index){
@@ -171,76 +226,84 @@ export default class NewSale extends Component{
 
 
   render(){
-    let date = new Date();
-    let today = date.toISOString().substr(0, 10);
-    let btnStr = (this.props.proforma === true) ? "Create Proforma" : "Record Sale";
-    return (
-      <div className="container">
-        <div className="card">
-          <div className="card-body">
-            <div className="row">
-              <div className="col-md-6">
-                <MDBInput id="cName" label="Customer Name (Optional)" type="text"/>
+    if(this.state.gotCustomers === true){
+      let date = new Date();
+      let today = date.toISOString().substr(0, 10);
+      let btnStr = (this.props.proforma === true) ? "Create Proforma" : "Record Sale";
+      return (
+        <div className="container">
+          <div className="card">
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-6">
+                  <MDBInput value={this.state.customerName} onChange={(e) => { this.handleName(e.target.value) }} list="_cList" id="cName" label="Customer Name (Optional)" type="text"/>
+                </div>
+                <div className="col-md-6">
+                  <MDBInput  value={this.state.customerDetails} onChange={(e) => { this.handleDetails(e.target.value) }} id="cDetails" label="Customer Details eg Phone, Address (Optional)" type="text"/>
+                </div>
+                <div className="col-md-6">
+                  <MDBInput valueDefault={today} id="cDate" label="Date*" type="date"/>
+                </div>
+
               </div>
-              <div className="col-md-6">
-                <MDBInput id="cDetails" label="Customer Details eg Phone, Address (Optional)" type="text"/>
+
+              <div className="row">
+                <div className="col-md-12" style={{ marginTop:"20px", marginBottom:"10px"}}>
+                  <h6 className="text-danger font-regular" style={{ fontSize:"12px" }}>
+                    Fill in items/services sold to this customer below
+                  </h6>
+                </div>
               </div>
-              <div className="col-md-6">
-                <MDBInput valueDefault={today} id="cDate" label="Date*" type="date"/>
+
+              <div id="soldItems" style={{ width:"100%", paddingLeft:"15px", paddingRight:"15px"}}>
+                {this.rows}
+              </div>
+
+              <div className="row">
+                <div className="col-md-12 text-right" style={{ marginTop:"0px", marginBottom:"10px"}}>
+                  <button onClick={() => { this.addRow() }} className="btn btn-sm btn-dark text-light"><MdAdd size={12}/>Add Row</button>
+                </div>
+              </div>
+
+              <hr/>
+
+              <div className="row">
+                <div className="col-md-6">
+                  <MDBInput id="cAmountPaid" valueDefault="0" label="Amount Paid By Customer Currently" type="number"/>
+                  <h6 className="text-danger font-regular" style={{ fontSize:"12px" }}>
+                    If less than {thousandSeps(this.total)} is paid now this customer will be added to debts
+                  </h6>
+                </div>
+
+                <div className="col-md-6 text-right" style={{ marginTop:"20px", marginBottom:"10px"}}>
+                  <h3>{thousandSeps(this.total)} {this.props.business.info.currency}</h3>
+                  <h6 className="text-warning font-regular">Grand Total Due</h6>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-md-6 text-left" style={{ marginTop:"30px", marginBottom:"10px", padding:"10px"}}>
+                  <button onClick={() => { this.save() }} className="btn btn-warning text-dark" >
+                    {
+                      (this.state.loading) ?
+                      getLoader() : ''
+
+                    }
+                    {btnStr}
+                  </button>
+                </div>
               </div>
 
             </div>
-
-            <div className="row">
-              <div className="col-md-12" style={{ marginTop:"20px", marginBottom:"10px"}}>
-                <h6 className="text-danger font-regular" style={{ fontSize:"12px" }}>
-                  Fill in items/services sold to this customer below
-                </h6>
-              </div>
-            </div>
-
-            <div id="soldItems" style={{ width:"100%", paddingLeft:"15px", paddingRight:"15px"}}>
-              {this.rows}
-            </div>
-
-            <div className="row">
-              <div className="col-md-12 text-right" style={{ marginTop:"0px", marginBottom:"10px"}}>
-                <button onClick={() => { this.addRow() }} className="btn btn-sm btn-dark text-light"><MdAdd size={12}/>Add Row</button>
-              </div>
-            </div>
-
-            <hr/>
-
-            <div className="row">
-              <div className="col-md-6">
-                <MDBInput id="cAmountPaid" valueDefault="0" label="Amount Paid By Customer Currently" type="number"/>
-                <h6 className="text-danger font-regular" style={{ fontSize:"12px" }}>
-                  If less than {thousandSeps(this.total)} is paid now this customer will be added to debts
-                </h6>
-              </div>
-
-              <div className="col-md-6 text-right" style={{ marginTop:"20px", marginBottom:"10px"}}>
-                <h3>{thousandSeps(this.total)} {this.props.business.info.currency}</h3>
-                <h6 className="text-warning font-regular">Grand Total Due</h6>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6 text-left" style={{ marginTop:"30px", marginBottom:"10px", padding:"10px"}}>
-                <button onClick={() => { this.save() }} className="btn btn-warning text-dark" >
-                  {
-                    (this.state.loading) ?
-                    getLoader() : ''
-
-                  }
-                  {btnStr}
-                </button>
-              </div>
-            </div>
-
           </div>
+          <datalist id={"_cList"}>
+              {this.customersList}
+          </datalist>
         </div>
-      </div>
-    );
+      );
+    }
+    else{
+      return (<div></div>);
+    }
   }
 }

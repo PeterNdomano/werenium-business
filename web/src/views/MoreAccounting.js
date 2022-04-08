@@ -68,6 +68,21 @@ export default class MoreAccounting extends Component {
             </div>
             <hr/>
           </div>
+
+          <div className="mTab">
+            <div className="d-flex flex-row">
+              <div className="align-self-center p-2">
+                <MdPerson size={24} className=""/>
+              </div>
+              <div className="align-self-center p-2 flex-grow-1">
+                <span>Purchase Orders - LPOs</span>
+              </div>
+              <div className="align-self-center p-2">
+                <MdNavigateNext size={24} className=""/>
+              </div>
+            </div>
+            <hr/>
+          </div>
         </div>
 
 
