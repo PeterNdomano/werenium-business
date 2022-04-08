@@ -29,6 +29,16 @@ class Business{
     )
   }
 
+  saveEmployee = async (employee) => {
+    let employees = this.db.getSchema().table('employees');
+    let row = employees.createRow(employee);
+    return (
+      await this.db.insertOrReplace().into(employees).values([row]).exec().then((row) => {
+        return true;
+      })
+    )
+  }
+
   saveAccountReceivable =  async (ar) => {
     let receivables = this.db.getSchema().table('receivableAccounts');
     let row = receivables.createRow(ar);
@@ -51,6 +61,15 @@ class Business{
 
   getAccountsReceivable = async () => {
     let table = this.db.getSchema().table('receivableAccounts');
+    return (
+      await this.db.select().from(table).orderBy(table.id, Order.DESC).exec().then((rows) => {
+        return rows;
+      })
+    )
+  }
+
+  getEmployees = async () => {
+    let table = this.db.getSchema().table('employees');
     return (
       await this.db.select().from(table).orderBy(table.id, Order.DESC).exec().then((rows) => {
         return rows;
@@ -203,6 +222,21 @@ class Business{
     );
   }
 
+  updateEmployee = async (item) => {
+    let table = this.db.getSchema().table('employees');
+    return (
+      await this.db.update(table)
+                    .set(table.fullname, item.fullname)
+                    .set(table.phone, item.phone)
+                    .set(table.details, item.details)
+                    .where(table.id.eq(item.id))
+                    .exec()
+                    .then((res) => {
+                      return true;
+                    })
+    );
+  }
+
   deleteStock = async (id) => {
     let stock = this.db.getSchema().table('stock');
     return (
@@ -215,6 +249,15 @@ class Business{
 
   deleteStockHistory = async (id) => {
     let table = this.db.getSchema().table('stockHistory');
+    return (
+      await this.db.delete().from(table).where(table.id.eq(id)).exec().then(() => {
+        return true;
+      })
+    );
+  }
+
+  deleteEmployee = async (id) => {
+    let table = this.db.getSchema().table('employees');
     return (
       await this.db.delete().from(table).where(table.id.eq(id)).exec().then(() => {
         return true;

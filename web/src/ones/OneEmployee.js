@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { MdEdit, MdDelete, MdInfo } from 'react-icons/md';
-import ViewCustomer from '../views/ViewCustomer';
+import ViewEmployee from '../views/ViewEmployee';
 import EditSale from '../views/EditSale';
 import { tellUser, thousandSeps } from '../Helper';
 
@@ -15,7 +15,7 @@ export default class OneIncome extends Component{
 
   delete = () => {
     this.props.showDialog( async () => {
-      await this.props.business.deleteCustomer(this.props.item.id).then((result) => {
+      await this.props.business.deleteEmployee(this.props.item.id).then((result) => {
         if(result === true){
           tellUser('Customer was deleted');
           this.props.reload();
@@ -31,8 +31,8 @@ export default class OneIncome extends Component{
 
   view = () => {
     this.props.showDialogView(
-      <ViewCustomer item={this.props.item}  business={this.props.business}/>,
-      "Viewing Customer"
+      <ViewEmployee item={this.props.item}  business={this.props.business}/>,
+      "Viewing Employee"
     );
   }
 
@@ -41,12 +41,10 @@ export default class OneIncome extends Component{
       <div className="OneSale">
         <div className="mContainer text-left">
           <h6 className="mAmount">
-            {this.props.item.name}
-
+            {this.props.item.fullname}
           </h6>
-
           <h6 style={{ fontSize: "12px"}}>
-            {"Registered: "+this.props.item.date.getFullYear()+" / "+this.props.item.date.getMonth()+" / "+this.props.item.date.getDate()}
+            {"Registered on: "+this.props.item.date.getFullYear()+" / "+this.props.item.date.getMonth()+" / "+this.props.item.date.getDate()}
           </h6>
         </div>
 

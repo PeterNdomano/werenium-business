@@ -4,11 +4,11 @@ import { MDBInput } from 'mdbreact';
 import { AiOutlineStock, AiOutlineAppstoreAdd } from 'react-icons/ai';
 import { numberFormat, getLoader, tellUser, getStartIndex } from '../Helper';
 import NewSale from '../views/NewSale';
-import OneCustomer from '../ones/OneCustomer';
+import OneEmployee from '../ones/OneEmployee';
 import $ from 'jquery';
 
 export default class AllExpenses extends Component{
-  //NOTE:: incomes == customers coz this was copied from AllIncomes.js
+  //NOTE:: incomes == employees coz this was copied from AllIncomes.js
   constructor(props){
     super(props);
 
@@ -53,7 +53,7 @@ export default class AllExpenses extends Component{
   }
 
   getIncomes = async (show = false) => {
-    this.incomes = await this.props.business.getCustomers(); //decesive
+    this.incomes = await this.props.business.getEmployees(); //decesive
     this.setIncomesValue();
     if(show){
       this.setIncomesShow();
@@ -61,7 +61,7 @@ export default class AllExpenses extends Component{
   }
 
   setIncomesValue = () => {
-    document.getElementById('_totalCustomersDisplay').innerHTML = numberFormat(this.incomes.length);
+    document.getElementById('_totalEmployeesDisplay').innerHTML = numberFormat(this.incomes.length);
   }
 
   setIncomesShow = (filterStr = '', bIndex = 0) => {
@@ -71,7 +71,7 @@ export default class AllExpenses extends Component{
       this.incomesShow = getLoader();
       this.incomesFiltered = [];
       this.incomes.forEach((item, index) => {
-        if(String(item.name).toLowerCase().indexOf(filterStr) > -1){
+        if(String(item.fullname).toLowerCase().indexOf(filterStr) > -1){
           this.incomesFiltered.push(item);
         }
       });
@@ -84,7 +84,7 @@ export default class AllExpenses extends Component{
             if(index >= startIndex){
               --limit;
               return (
-                <OneCustomer reload={this.props.reload} openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                <OneEmployee reload={this.props.reload} openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
               );
             }
           }
@@ -114,7 +114,7 @@ export default class AllExpenses extends Component{
             if(index >= startIndex){
               --limit;
               return (
-                <OneCustomer reload={this.props.reload}  openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
+                <OneEmployee reload={this.props.reload}  openViewer={this.props.openViewer} business={this.props.business} getIncomes={this.getIncomes} showDialogView={this.props.showDialogView} openViewer={this.props.openViewer} business={this.props.business} showDialog={this.props.showDialog} key={item.id} item={item}/>
               );
             }
           }
@@ -210,7 +210,7 @@ export default class AllExpenses extends Component{
     return (
       <div className="container">
         <div style={{ width:"100%"}}>
-          <MDBInput value={this.state.filterString} onChange={(e) => {this.handleFilter(e)}} style={{ }} label="Filter by customer's name" size="sm" icon="search" />
+          <MDBInput value={this.state.filterString} onChange={(e) => {this.handleFilter(e)}} style={{ }} label="Filter by employee name" size="sm" icon="search" />
         </div>
         <div style={{ width:"100%"}}>
           {this.incomesShow}
