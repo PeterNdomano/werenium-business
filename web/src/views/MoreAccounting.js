@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { MdPerson, MdNavigateNext } from 'react-icons/md';
 import MainIncome from '../views/MainIncome';
 import MainExpenses from '../views/MainExpenses';
+import MainReceivables from '../views/MainReceivables';
 
 
 
@@ -17,6 +18,13 @@ export default class MoreAccounting extends Component {
     this.props.openViewer(
       "Expenses Management",
       <MainExpenses showDialogView={this.props.showDialogView} showDialog={this.props.showDialog}  business={this.props.business}/>
+    );
+  }
+
+  openReceivables = () => {
+    this.props.openViewer(
+      "Accounts Receivable",
+      <MainReceivables showDialogView={this.props.showDialogView} showDialog={this.props.showDialog}  business={this.props.business}/>
     );
   }
   render(){
@@ -86,7 +94,7 @@ export default class MoreAccounting extends Component {
         </div>
 
 
-        <div className="col-md-6">
+        <div className="col-md-6" onClick={() => this.openReceivables()}>
           <div className="mTab">
             <div className="d-flex flex-row">
               <div className="align-self-center p-2">

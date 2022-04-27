@@ -65,14 +65,21 @@ export default class NavBar extends Component{
           </div>
         </div>
 
-
-
         <div onClick={() => this.navTo("invoicing")} className={(props.navTo === "invoicing") ? "mItem selected d-flex" : "mItem d-flex"}>
           <div className="align-self-center p-1">
             <MdHome className="mIcon"/>
           </div>
           <div className="align-self-center p-1">
             <p className="mTitle">Invoicing</p>
+          </div>
+        </div>
+
+        <div onClick={() => this.navTo("invoicing")} className={(props.navTo === "invoicing") ? "mItem selected d-flex" : "mItem d-flex"}>
+          <div className="align-self-center p-1">
+            <MdHome className="mIcon"/>
+          </div>
+          <div className="align-self-center p-1">
+            <p className="mTitle">Email & SMS</p>
           </div>
         </div>
 

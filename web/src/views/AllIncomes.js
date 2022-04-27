@@ -53,7 +53,13 @@ export default class AllIncomes extends Component{
   }
 
   getIncomes = async (show = false) => {
-    this.incomes = await this.props.business.getIncomes();
+    let incomes = await this.props.business.getIncomes();
+    incomes.forEach((item, index) => {
+      if(Number(item.amountPaid) > 0){
+        this.incomes.push(item);
+      }
+    })
+
     this.setIncomesValue();
     if(show){
       this.setIncomesShow();
