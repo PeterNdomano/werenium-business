@@ -7,7 +7,7 @@ import NewSale from '../views/NewSale';
 import OneSale from '../ones/OneSale';
 import $ from 'jquery';
 import AddExpense from '../views/AddExpense';
-import AllExpenses from '../views/AllExpenses';
+import AllReceivables from '../views/AllReceivables';
 
 export default class MainExpenses extends Component{
 
@@ -61,7 +61,7 @@ export default class MainExpenses extends Component{
                       <AiOutlineStock className="mIcon"/>
                     </div>
                     <div className="align-self-center flex-grow-1 text-right p-2">
-                      <h1 id="_totalExpenseDisplay">0</h1>
+                      <h1 id="_totalCollectedDisplay">0</h1>
                       <h6>Collected Amount</h6>
                     </div>
                   </div>
@@ -75,7 +75,7 @@ export default class MainExpenses extends Component{
                       <AiOutlineStock className="mIcon"/>
                     </div>
                     <div className="align-self-center flex-grow-1 text-right p-2">
-                      <h1 id="_totalExpenseDisplay">0</h1>
+                      <h1 id="_totalUncollectedDisplay">0</h1>
                       <h6>Uncollected Amount</h6>
                     </div>
                   </div>
@@ -97,7 +97,7 @@ export default class MainExpenses extends Component{
           <div className="col-sm-12 col-md-12">
             <div className="card">
               <div className="card-body">
-                <AllExpenses reload={this.reload} showTotal={true} showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.props.openViewer} business={this.props.business}/>
+                <AllReceivables reload={this.reload} showTotal={true} showDialogView={this.props.showDialogView} showDialog={this.props.showDialog} openViewer={this.props.openViewer} business={this.props.business}/>
               </div>
             </div>
           </div>
